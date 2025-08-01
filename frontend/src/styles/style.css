@@ -12,8 +12,10 @@ header {
 
 .header-left h1 {
   font-family: 'Monoton', cursive;
-  font-size: 2.2em;
+  font-size: 1.5em;
   margin: 0;
+  color: #ffd700;
+  letter-spacing: 0.1px;
 }
 
 .header-left .tagline {
@@ -34,7 +36,7 @@ header {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
-  margin: 0 4px;
+  margin: 0 10px;
   transition: color 0.2s;
 }
 
@@ -89,7 +91,8 @@ header {
   font-size: 1.4em;
   color: #ffd700;
   margin: 32px 0 16px 0;
-  text-align: center;
+  text-align: left;
+  padding: 20px;
 }
 
 .video-list {
@@ -137,18 +140,24 @@ header {
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.15);
   margin: 32px auto;
-  max-width: 700px;
+  max-height: 450px;
+  max-width: 800px;
   overflow: hidden;
 }
 .featured-thumbnail {
-  width: 320px;
-  height: 180px;
   object-fit: cover;
+  height: 100%;
+  width: 100%;
   border-radius: 16px 0 0 16px;
 }
 
 .featured-info {
+  position: absolute;
+  background-color: #181c24b4;
+  border-radius: 10px;
   padding: 24px;
+  max-width: 310px;
+  margin-left: 10px;
   color: #fff;
   flex: 1;
 }
@@ -182,7 +191,7 @@ footer {
 }
 
 .social-media {
-  margin-bottom: 12px;
+  margin-top: -10px;
 }
 
 .social-media a {
@@ -192,7 +201,7 @@ footer {
 }
 
 .social-media a:hover {
-  transform: scale(1.15);
+  transform: rotate(25deg);
 }
 
 .social-media img {
@@ -204,8 +213,10 @@ footer {
 .copyright {
   font-size: 0.95em;
   color: #bbb;
+  margin-bottom: -10px;
 }
 
+/* Modal style */
 .modal {
   position: fixed;
   top: 0; left: 0;
@@ -221,7 +232,7 @@ footer {
   background: #181c24;
   padding: 32px;
   border-radius: 14px;
-  max-width: 600px;
+  max-width: 710px;
   width: 90%;
   color: white;
   position: relative;
@@ -230,7 +241,7 @@ footer {
 
 .close-button {
   position: absolute;
-  top: 16px;
+  top: 10px;
   right: 24px;
   font-size: 32px;
   cursor: pointer;
@@ -238,15 +249,25 @@ footer {
 }
 
 #player-title {
-  margin-bottom: 12px;
+  margin-top: -10px;
 }
 
 #player-meta {
-  margin-bottom: 18px;
-  color: #bbb;
-  font-size: 0.98em;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+#player-views {
+  white-space: nowrap;
 }
 
 .modal-date {
-  margin-left: 16px;
+  text-align: right;
+  margin-left: auto;
+  white-space: nowrap;
 }
