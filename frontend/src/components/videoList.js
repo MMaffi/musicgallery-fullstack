@@ -7,7 +7,12 @@ function VideoList({ videos, openPlayer }) {
     <div className="video-list">
       {videos.map((video) => (
         <div key={video.id} className="video-card" onClick={() => openPlayer(video)}>
-          <img src={video.thumbnail} alt={video.title} className="video-thumb" />
+          <img
+            src={video.thumbnail_url}
+            alt={video.title}
+            className="video-thumb"
+            onError={e => { e.target.src = '/assets/images/no-image.png'; }}
+          />
           <div className="video-info">
             <h4>{video.title}</h4>
             <span>{video.views} views</span>
