@@ -1,62 +1,205 @@
 .settings-modal {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.7);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000;
+  z-index: 10000;
 }
+
 .settings-content {
-  background: #181c24;
+  background: #101820;
   color: #fff;
-  padding: 32px 24px;
-  border-radius: 14px;
-  max-width: 400px;
+  padding: 25px;
+  padding-bottom: 10px;
   width: 90%;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   position: relative;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
+
+.settings-content h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
 .close-settings {
   position: absolute;
-  top: 16px;
-  right: 24px;
-  font-size: 32px;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
   cursor: pointer;
+  transition: .3s;
 }
+
+.close-settings:hover {
+  color: red;
+}
+
 .setting-row {
   display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 20px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+  width: 100%;
 }
+
+.setting-item {
+  flex: 1;
+  justify-content: center;
+  min-width: 160px;
+}
+
 .setting-item label {
+  display: block;
+  margin-bottom: 6px;
   font-weight: bold;
-  margin-bottom: 8px;
+}
+
+.setting-group {
+  margin: 20px 0;
+}
+
+.setting-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.setting-group button {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  background: #0c1014;
+  color: #fff;
+  cursor: pointer;
+}
+
+.setting-group.about {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.setting-group.about p {
+  margin: 4px 0;
+  line-height: 1.3;
+}
+
+.setting-group.about a:visited {
+  color: #4141f7;
+}
+
+.setting-group img#bellIcon {
+  filter: brightness(0) invert(1);
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+.language-dropdown,
+.theme-dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-bg, #0c1014);
+  color: var(--color-text, #fff);
+  border: 1px solid #555;
+  padding: 8px 12px;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 160px;
+  box-sizing: border-box;
+}
+
+.dropdown-toggle img {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background-color: var(--color-bg, #0c1014);
+  border: 1px solid #555;
+  border-radius: 4px;
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 4px 0;
+  display: none;
+  z-index: 1000;
+  min-width: 160px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.dropdown-options li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  color: #fff;
+  cursor: pointer;
+  min-width: 163px;
+  transition: background 0.2s ease;
+}
+
+.dropdown-options li:hover {
+  background-color: #333;
+}
+
+.dropdown-options img {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.language-dropdown.open .dropdown-options {
   display: block;
 }
-.setting-group {
-  margin-bottom: 18px;
+
+.theme-dropdown.open .dropdown-options {
+  display: block;
 }
-.setting-group.about {
-  margin-top: 24px;
-  font-size: 0.95em;
-  color: #bbb;
-}
+
+
+/* Botao para abrir config */
 #configBtn {
   position: fixed;
-  bottom: 32px;
-  right: 32px;
-  background: #181c24;
-  color: #fff;
+  bottom: 20px;
+  right: 20px;
+  background-color: #101820;
+  color: #ccc;
   border: none;
   border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-  z-index: 2100;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+#configBtn:hover {
+  background-color: #161e25;
 }

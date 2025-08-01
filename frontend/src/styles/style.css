@@ -83,8 +83,8 @@ header {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
-  justify-content: center;
   margin-bottom: 32px;
+  margin-left: 20px;
 }
 
 .gallery-subtitle {
@@ -92,14 +92,13 @@ header {
   color: #ffd700;
   margin: 32px 0 16px 0;
   text-align: left;
-  padding: 20px;
+  padding-left: 20px;
 }
 
 .video-list {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
-  justify-content: center;
 }
 
 .video-card {
@@ -127,10 +126,18 @@ header {
 .video-info {
   padding: 12px;
   color: #fff;
+  display: flex;
+  flex-direction: column;
 }
+
 .video-info h4 {
   font-size: 1em;
   margin: 0 0 6px 0;
+}
+
+.video-info span {
+  margin-top: 4px;
+  text-align: right;
 }
 
 .featured-video {
@@ -184,7 +191,7 @@ header {
 }
 
 footer {
-  background: #181c24;
+  background: #101820;
   color: #fff;
   padding: 32px 0 16px 0;
   text-align: center;
@@ -197,17 +204,18 @@ footer {
 .social-media a {
   margin: 0 8px;
   display: inline-block;
-  transition: transform 0.2s;
+  transition: transform 0.3s;
 }
 
 .social-media a:hover {
-  transform: rotate(25deg);
+  transform: rotate(15deg) scale(1.15);
 }
 
 .social-media img {
   width: 32px;
   height: 32px;
   vertical-align: middle;
+  filter: brightness(0) invert(1);
 }
 
 .copyright {
@@ -230,7 +238,7 @@ footer {
 
 .modal-content {
   background: #181c24;
-  padding: 32px;
+  padding: 24px;
   border-radius: 14px;
   max-width: 710px;
   width: 90%;
@@ -246,10 +254,16 @@ footer {
   font-size: 32px;
   cursor: pointer;
   color: #ffd700;
+  transition: .3s;
+}
+
+.close-button:hover {
+  color: red;
 }
 
 #player-title {
-  margin-top: -10px;
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
 #player-meta {
@@ -270,4 +284,31 @@ footer {
   text-align: right;
   margin-left: auto;
   white-space: nowrap;
+}
+
+/* Style da scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ffd700;
+  border-radius: 10px;
+  border: 2px solid #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #fff200;
+}
+
+@media (max-width: 800px) {
+  .featured-video {
+    margin: 32px 10px;
+  }
 }

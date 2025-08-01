@@ -1,8 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../styles/configstyle.css';
 
 function SettingsModal() {
   const [open, setOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const [themeOpen, setThemeOpen] = useState(false);
+  const [selectedLang, setSelectedLang] = useState({ code: 'pt', label: 'Português', flag: './assets/flags/br.svg' });
+  const [selectedTheme, setSelectedTheme] = useState({ code: 'dark', label: '🌙 Escuro' });
+
+  const langRef = useRef(null);
+  const themeRef = useRef(null);
+
+  // Bloqueia scroll do body quando modal está aberto
+  useEffect(() => {
+    if (open) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
+  // Fecha dropdowns ao clicar fora (um único listener para ambos)
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (langOpen && langRef.current && !langRef.current.contains(e.target)) setLangOpen(false);
+      if (themeOpen && themeRef.current && !themeRef.current.contains(e.target)) setThemeOpen(false);
+    }
+    if (langOpen || themeOpen) {
+      document.addEventListener('click', handleClickOutside);
+    }
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [langOpen, themeOpen]);
+
+  function handleLangSelect(lang) {
+    setSelectedLang(lang);
+    setLangOpen(false);
+  }
+  function handleThemeSelect(theme) {
+    setSelectedTheme(theme);
+    setThemeOpen(false);
+  }
 
   return (
     <>
@@ -20,11 +55,55 @@ function SettingsModal() {
             <div className="setting-row">
               <div className="setting-item">
                 <label>Idioma:</label>
-                {/* Dropdown de idiomas */}
+                <div className={`language-dropdown${langOpen ? ' open' : ''}`} ref={langRef}>
+                  <button
+                    id="selectedLang"
+                    className="dropdown-toggle"
+                    onClick={() => setLangOpen((v) => !v)}
+                    type="button"
+                  >
+                    <img src={selectedLang.flag} alt={selectedLang.label} />
+                    <span>{selectedLang.label}</span>
+                  </button>
+                  <ul className="dropdown-options">
+                    <li onClick={() => handleLangSelect({ code: 'pt', label: 'Português', flag: './assets/flags/br.svg' })}>
+                      <img src="./assets/flags/br.svg" alt="Bandeira do Brasil" />
+                      <span>Português</span>
+                    </li>
+                    <li onClick={() => handleLangSelect({ code: 'en', label: 'English', flag: './assets/flags/us.svg' })}>
+                      <img src="./assets/flags/us.svg" alt="Bandeira dos EUA" />
+                      <span>English</span>
+                    </li>
+                    <li onClick={() => handleLangSelect({ code: 'es', label: 'Español', flag: './assets/flags/es.svg' })}>
+                      <img src="./assets/flags/es.svg" alt="Bandeira da Espanha" />
+                      <span>Español</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div className="setting-item">
                 <label>Tema:</label>
-                {/* Dropdown de temas */}
+                <div className={`theme-dropdown${themeOpen ? ' open' : ''}`} ref={themeRef}>
+                  <button
+                    id="selectedTheme"
+                    className="dropdown-toggle"
+                    onClick={() => setThemeOpen((v) => !v)}
+                    type="button"
+                  >
+                    <span>{selectedTheme.label}</span>
+                  </button>
+                  <ul className="dropdown-options">
+                    <li onClick={() => handleThemeSelect({ code: 'dark', label: '🌙 Escuro' })}>
+                      <span>🌙 Escuro</span>
+                    </li>
+                    <li onClick={() => handleThemeSelect({ code: 'light', label: '☀️ Claro' })}>
+                      <span>☀️ Claro</span>
+                    </li>
+                    <li onClick={() => handleThemeSelect({ code: 'system', label: '🖥️ Sistema' })}>
+                      <span>🖥️ Sistema</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
             <div className="setting-group">

@@ -25,13 +25,13 @@ const mockVideos = [
     views: 8888888
   },
   {
-    id: '3JZ_D3ELwOQ',
-    title: 'Mark Ronson - Uptown Funk ft. Bruno Mars',
-    artist: 'Mark Ronson',
-    thumbnail_url: 'https://img.youtube.com/vi/3JZ_D3ELwOQ/hqdefault.jpg',
-    video_url: 'https://www.youtube.com/watch?v=3JZ_D3ELwOQ',
-    publishedAt: '2014-11-19T00:00:00Z',
-    views: 8888888
+    id: 'dQw4w9WgXcQ',
+    title: 'Rick Astley - Never Gonna Give You Up',
+    artist: 'Rick Astley',
+    thumbnail_url: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+    video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    publishedAt: '1987-10-25T00:00:00Z',
+    views: 9999999
   },
   {
     id: '3JZ_D3ELwOQ',
@@ -43,13 +43,13 @@ const mockVideos = [
     views: 8888888
   },
   {
-    id: '3JZ_D3ELwOQ',
-    title: 'Mark Ronson - Uptown Funk ft. Bruno Mars',
-    artist: 'Mark Ronson',
-    thumbnail_url: 'https://img.youtube.com/vi/3JZ_D3ELwOQ/hqdefault.jpg',
-    video_url: 'https://www.youtube.com/watch?v=3JZ_D3ELwOQ',
-    publishedAt: '2014-11-19T00:00:00Z',
-    views: 8888888
+    id: 'dQw4w9WgXcQ',
+    title: 'Rick Astley - Never Gonna Give You Up',
+    artist: 'Rick Astley',
+    thumbnail_url: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+    video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    publishedAt: '1987-10-25T00:00:00Z',
+    views: 9999999
   },
 ];
 
@@ -92,6 +92,18 @@ function App() {
       setFeatured(videos[randomIndex]);
     }
   }, [videos]);
+
+  useEffect(() => {
+    if (showPlayer) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    // Limpa ao desmontar
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showPlayer]);
 
   const openPlayer = (video) => {
     setPlayerVideo(video);
