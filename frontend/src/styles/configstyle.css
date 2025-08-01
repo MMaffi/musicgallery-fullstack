@@ -1,0 +1,62 @@
+.settings-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+.settings-content {
+  background: #181c24;
+  color: #fff;
+  padding: 32px 24px;
+  border-radius: 14px;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.close-settings {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  font-size: 32px;
+  cursor: pointer;
+}
+.setting-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.setting-item label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+}
+.setting-group {
+  margin-bottom: 18px;
+}
+.setting-group.about {
+  margin-top: 24px;
+  font-size: 0.95em;
+  color: #bbb;
+}
+#configBtn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: #181c24;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 2100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
