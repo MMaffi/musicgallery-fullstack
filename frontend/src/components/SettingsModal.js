@@ -11,14 +11,12 @@ function SettingsModal() {
   const langRef = useRef(null);
   const themeRef = useRef(null);
 
-  // Bloqueia scroll do body quando modal está aberto
   useEffect(() => {
     if (open) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = '';
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  // Fecha dropdowns ao clicar fora (um único listener para ambos)
   useEffect(() => {
     function handleClickOutside(e) {
       if (langOpen && langRef.current && !langRef.current.contains(e.target)) setLangOpen(false);
