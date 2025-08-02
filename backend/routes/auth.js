@@ -36,33 +36,38 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
 
-  const sql = 'SELECT * FROM users WHERE email = ?';
-  db.query(sql, [email], (err, results) => {
-    if (err) {
-      console.error('Erro ao consultar usuário:', err);
-      return res.status(500).json({ message: 'Erro no servidor' });
-    }
-
-    if (results.length === 0) {
-      return res.status(401).json({ message: 'Credenciais inválidas' });
-    }
+  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+    if (err) return res.status(500).json({ message: 'Erro no servidor' });
+    if (results.length === 0) return res.status(401).json({ message: 'Credenciais inválidas' });
 
     const user = results[0];
-
     bcrypt.compare(password, user.password, (bcryptErr, match) => {
-      if (bcryptErr) {
-        console.error('Erro ao comparar senha:', bcryptErr);
-        return res.status(500).json({ message: 'Erro no servidor' });
-      }
-
-      if (!match) {
-        return res.status(401).json({ message: 'Credenciais inválidas' });
-      }
+      if (bcryptErr) return res.status(500).json({ message: 'Erro no servidor' });
+      if (!match) return res.status(401).json({ message: 'Credenciais inválidas' });
 
       const token = jwt.sign({ id: user.id, name: user.name }, SECRET, { expiresIn: '1d' });
-      return res.status(200).json({ token, name: user.name });
+
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000
+      });
+
+      res.json({ name: user.name });
     });
   });
+});
+
+router.post('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.json({ message: 'Logout efetuado' });
+});
+
+const authenticate = require('../middleware/auth');
+
+router.get('/me', authenticate, (req, res) => {
+  res.json({ id: req.user.id, name: req.user.name });
 });
 
 module.exports = router;

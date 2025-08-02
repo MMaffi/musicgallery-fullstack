@@ -1,7 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import '../styles/configstyle.css';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import LogoutButton from './LogoutButton';
 
 function SettingsModal() {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
@@ -36,6 +42,16 @@ function SettingsModal() {
     setSelectedTheme(theme);
     setThemeOpen(false);
   }
+
+  const handleLoginClick = () => {
+    setOpen(false);
+    navigate('/login');
+  };
+
+  const handleRegisterClick = () => {
+    setOpen(false);
+    navigate('/register');
+  };
 
   return (
     <>
@@ -113,6 +129,19 @@ function SettingsModal() {
             <div className="setting-group">
               <label>Histórico:</label>
               <button>Limpar histórico</button>
+            </div>
+            <div className="setting-group auth-buttons">
+              {user ? (
+                <>
+                  <p>Olá, {user.name}!</p>
+                  <LogoutButton />
+                </>
+              ) : (
+                <>
+                  <button onClick={handleLoginClick}>Login</button>
+                  <button onClick={handleRegisterClick}>Registrar</button>
+                </>
+              )}
             </div>
             <div className="setting-group about">
               <p><strong>Music Gallery</strong> v<span id="siteVersion">1.0.0</span></p>

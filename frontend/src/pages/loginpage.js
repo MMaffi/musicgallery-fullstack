@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Navbar from '../components/navbar';
 import '../styles/register.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
-function RegisterPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: ''
-  });
-
+function LoginPage() {
+  const { setUser } = useContext(AuthContext); // pega setUser do contexto
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [status, setStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,18 +22,25 @@ function RegisterPage() {
     setErrorMessage('');
 
     try {
-      const res = await fetch('http://localhost:3000/api/auth/register', {
+      const res = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        credentials: 'include',
       });
 
       if (res.ok) {
+        const data = await res.json();
+
+        setUser({ name: data.name });
+
         setStatus('success');
-        setFormData({ name: '', email: '', password: '' });
+        setTimeout(() => {
+          navigate('/');
+        }, 1500);
       } else {
         const data = await res.json();
-        setErrorMessage(data.message || 'Erro ao registrar');
+        setErrorMessage(data.message || 'Erro no login');
         setStatus('error');
       }
     } catch (err) {
@@ -46,23 +51,11 @@ function RegisterPage() {
 
   return (
     <>
-      <Navbar subtitle="Registro" />
+      <Navbar subtitle="Login" />
       <main className='register-container'>
         <div className="register-page">
-          <h2>Cadastrar-se</h2>
+          <h2>Entrar</h2>
           <form onSubmit={handleSubmit}>
-            <label htmlFor="name">Nome:</label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              placeholder='Ex: João'
-              value={formData.name}
-              onChange={handleChange}
-              autoComplete='off'
-              required
-            />
-
             <label htmlFor="email">E-mail:</label>
             <input
               id="email"
@@ -74,7 +67,6 @@ function RegisterPage() {
               autoComplete='off'
               required
             />
-
             <label htmlFor="password">Senha:</label>
             <input
               id="password"
@@ -86,19 +78,18 @@ function RegisterPage() {
               autoComplete='off'
               required
             />
-
             <button type="submit" disabled={status === 'loading'}>
-              {status === 'loading' ? 'Registrando...' : 'Registrar'}
+              {status === 'loading' ? 'Entrando...' : 'Entrar'}
             </button>
           </form>
 
           <div className="status-message">
-            {status === 'success' && <p className="success-msg">Usuário registrado com sucesso!</p>}
+            {status === 'success' && <p className="success-msg">Login realizado com sucesso!</p>}
             {status === 'error' && <p className="error-msg">{errorMessage}</p>}
           </div>
 
           <p className='linklogin'>
-            Já tem cadastro? Faça <NavLink to="/login">Login</NavLink>
+            Ainda não tem cadastro? Faça <NavLink to="/register">Registro</NavLink>
           </p>
         </div>
       </main>
@@ -106,4 +97,4 @@ function RegisterPage() {
   );
 }
 
-export default RegisterPage;
+export default LoginPage;

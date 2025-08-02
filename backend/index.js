@@ -1,11 +1,18 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 require('./db/conn');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3001',
+  credentials: true
+}));
+
+app.use(cookieParser());
+
 app.use(express.json());
 
 // Exemplo de rota inicial
