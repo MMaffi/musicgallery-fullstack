@@ -1,28 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/navbar';
 import '../styles/register.css';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function RegisterPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: ''
-  });
-
-  const [status, setStatus] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (status === 'success') {
-      // Redireciona após 1.5 segundos para a página de login
-      const timer = setTimeout(() => {
-        navigate('/login');
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [status, navigate]);
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [status, setStatus] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,7 +17,6 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('loading');
-    setErrorMessage('');
 
     try {
       const res = await fetch('http://localhost:3000/api/auth/register', {
@@ -43,15 +27,24 @@ function RegisterPage() {
 
       if (res.ok) {
         setStatus('success');
+        toast.success('Usuário registrado com sucesso! Redirecionando para login...');
         setFormData({ name: '', email: '', password: '' });
+        setTimeout(() => navigate('/login'), 2000);
       } else {
-        const data = await res.json();
-        setErrorMessage(data.message || 'Erro ao registrar');
+        let errorMsg = 'Erro ao registrar';
+        try {
+          const data = await res.json();
+          if (data.message) errorMsg = data.message;
+        } catch {
+          const text = await res.text();
+          if (text) errorMsg = text;
+        }
         setStatus('error');
+        toast.error(errorMsg);
       }
     } catch (err) {
-      setErrorMessage('Erro na conexão');
       setStatus('error');
+      toast.error('Erro na conexão');
     }
   };
 
@@ -102,11 +95,6 @@ function RegisterPage() {
               {status === 'loading' ? 'Registrando...' : 'Registrar'}
             </button>
           </form>
-
-          <div className="status-message">
-            {status === 'success' && <p className="success-msg">Usuário registrado com sucesso! Redirecionando para login...</p>}
-            {status === 'error' && <p className="error-msg">{errorMessage}</p>}
-          </div>
 
           <p className='linklogin'>
             Já tem cadastro? Faça <NavLink to="/login">Login</NavLink>

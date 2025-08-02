@@ -3,12 +3,12 @@ import Navbar from '../components/navbar';
 import '../styles/register.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 function LoginPage() {
   const { setUser } = useContext(AuthContext); // pega setUser do contexto
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [status, setStatus] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -19,7 +19,6 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('loading');
-    setErrorMessage('');
 
     try {
       const res = await fetch('http://localhost:3000/api/auth/login', {
@@ -35,17 +34,25 @@ function LoginPage() {
         setUser({ name: data.name });
 
         setStatus('success');
+        toast.success('Login realizado com sucesso!');
         setTimeout(() => {
           navigate('/');
         }, 1500);
       } else {
-        const data = await res.json();
-        setErrorMessage(data.message || 'Erro no login');
+        let errorMsg = 'Erro no login';
+        try {
+          const data = await res.json();
+          if (data.message) errorMsg = data.message;
+        } catch {
+          const text = await res.text();
+          if (text) errorMsg = text;
+        }
         setStatus('error');
+        toast.error(errorMsg);
       }
     } catch (err) {
-      setErrorMessage('Erro na conexão');
       setStatus('error');
+      toast.error('Erro na conexão');
     }
   };
 
@@ -82,11 +89,6 @@ function LoginPage() {
               {status === 'loading' ? 'Entrando...' : 'Entrar'}
             </button>
           </form>
-
-          <div className="status-message">
-            {status === 'success' && <p className="success-msg">Login realizado com sucesso!</p>}
-            {status === 'error' && <p className="error-msg">{errorMessage}</p>}
-          </div>
 
           <p className='linklogin'>
             Ainda não tem cadastro? Faça <NavLink to="/register">Registro</NavLink>
