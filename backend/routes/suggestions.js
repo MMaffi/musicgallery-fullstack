@@ -25,7 +25,7 @@ router.post('/send', async (req, res) => {
 📨 Sugestão enviada pelo site Music Gallery
 
 👤 Nome: ${name}
-📧 Email: ${email || 'Não informado'}
+📧 Email: ${email}
 
 🎵 Música: ${song}
 🎤 Artista: ${artist}
