@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/navbar';
 import '../styles/register.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -12,6 +12,17 @@ function RegisterPage() {
 
   const [status, setStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (status === 'success') {
+      // Redireciona após 1.5 segundos para a página de login
+      const timer = setTimeout(() => {
+        navigate('/login');
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [status, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -93,7 +104,7 @@ function RegisterPage() {
           </form>
 
           <div className="status-message">
-            {status === 'success' && <p className="success-msg">Usuário registrado com sucesso!</p>}
+            {status === 'success' && <p className="success-msg">Usuário registrado com sucesso! Redirecionando para login...</p>}
             {status === 'error' && <p className="error-msg">{errorMessage}</p>}
           </div>
 

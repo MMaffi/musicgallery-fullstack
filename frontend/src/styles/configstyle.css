@@ -203,3 +203,61 @@
 #configBtn:hover {
   background-color: #161e25;
 }
+
+.login-required-msg {
+  background: #222;
+  padding: 12px;
+  border-left: 4px solid #f39c12;
+  color: #f1c40f;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+
+.user_label {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.auth-buttons button {
+  width: 100%;
+  padding: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(145deg, #1a1f27, #0c1014);
+  color: #fff;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.auth-buttons button:hover {
+  background-color: #1c1f26;
+  transform: translateY(-1px);
+}
+
+.auth-buttons button:active {
+  transform: scale(0.98);
+  background-color: #0c1014;
+}
+
+.auth-buttons .login-btn {
+  background: linear-gradient(145deg, #2b3a55, #1a2330);
+}
+
+.auth-buttons .register-btn {
+  background: linear-gradient(145deg, #274b3c, #1a3327);
+}
+
+.auth-buttons .logout-btn {
+  background: linear-gradient(145deg, #552b2b, #301a1a);
+}

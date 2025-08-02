@@ -1,7 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/style.css';
+import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 function SuggestionsPage() {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!user) {
+        toast.info('Você precisa estar logado para acessar esta página.');
+        navigate('/login');
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [user, navigate]);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
