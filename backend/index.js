@@ -19,11 +19,18 @@ app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
 
+// Rota de musicas
 const musicRoutes = require('./routes/musics');
 app.use('/api/musics', musicRoutes);
 
+// Rota da api youtube
 const youtubeRoutes = require('./routes/youtube');
 app.use('/api/youtube', youtubeRoutes);
 
+// Rota da suggestionspage
 const suggestionRoutes = require('./routes/suggestions');
 app.use('/api/suggestions', suggestionRoutes);
+
+// Rota de Registro/Login
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
