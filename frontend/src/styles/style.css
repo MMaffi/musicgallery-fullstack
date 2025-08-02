@@ -309,10 +309,26 @@ footer {
   white-space: nowrap;
 }
 
+/* Style do about page */
+main.sobre {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.sobre h2 {
+  color: #fff;
+  font-size: 2.5em;
+}
+
+.sobre p {
+  color: #fff;
+  font-size: 1.2em;
+  text-align: justify;
+}
+
 /* Style da scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 8px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
