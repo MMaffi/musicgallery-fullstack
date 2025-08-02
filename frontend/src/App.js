@@ -9,6 +9,8 @@ import VideosPage from './pages/videospage';
 import AboutPage from './pages/aboutpage';
 import SuggestionsPage from './pages/suggestionspage';
 
+import RegisterPage from './pages/registerpage';
+
 const mockVideos = [
   {
     id: 'dQw4w9WgXcQ',
@@ -145,6 +147,7 @@ function App() {
               <Navbar subtitle="Sugestões" />
             }
           />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
 
         <Routes>
