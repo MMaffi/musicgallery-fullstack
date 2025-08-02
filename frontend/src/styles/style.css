@@ -332,15 +332,21 @@ main.sobre {
 }
 
 /* Style do suggestions page */
+.suggestions-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+}
+
 .suggestion-form {
+  width: 100%;
   max-width: 600px;
-  margin: 80px auto 40px;
-  padding: 2rem;
   background-color: #1e1e2f;
+  padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  color: #f1f1f1;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 .suggestion-form h2 {

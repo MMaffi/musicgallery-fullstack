@@ -40,40 +40,42 @@ function SuggestionsPage() {
   };
 
   return (
-    <section className="suggestion-form">
-      <h2>Sugira uma música para o próximo cover 🎤</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Seu nome"
-          value={formData.name}
-          onChange={handleChange}
-          autoComplete='off'
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Seu e-mail (opcional)"
-          value={formData.email}
-          onChange={handleChange}
-          autoComplete='off'
-        />
-        <textarea
-          name="suggestion"
-          placeholder="Qual música você gostaria de ouvir?"
-          value={formData.suggestion}
-          onChange={handleChange}
-          autoComplete='off'
-          required
-        ></textarea>
-        <button type="submit">Enviar sugestão</button>
-        {status === 'enviando' && <p>Enviando...</p>}
-        {status === 'sucesso' && <p>Obrigado pela sugestão! 🎶</p>}
-        {status === 'erro' && <p>Ocorreu um erro. Tente novamente.</p>}
-      </form>
-    </section>
+    <main className="suggestions-main">
+      <section className="suggestion-form">
+        <h2>Sugira uma música para o próximo cover 🎤</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Seu nome"
+            value={formData.name}
+            onChange={handleChange}
+            autoComplete='off'
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Seu e-mail (opcional)"
+            value={formData.email}
+            onChange={handleChange}
+            autoComplete='off'
+          />
+          <textarea
+            name="suggestion"
+            placeholder="Qual música você gostaria de ouvir?"
+            value={formData.suggestion}
+            onChange={handleChange}
+            autoComplete='off'
+            required
+          ></textarea>
+          <button type="submit">Enviar sugestão</button>
+          {status === 'enviando' && <p>Enviando...</p>}
+          {status === 'sucesso' && <p>Obrigado pela sugestão! 🎶</p>}
+          {status === 'erro' && <p>Ocorreu um erro. Tente novamente.</p>}
+        </form>
+      </section>
+    </main>
   );
 }
 
