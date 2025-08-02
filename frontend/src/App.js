@@ -7,6 +7,7 @@ import SettingsModal from './components/SettingsModal';
 import Home from './pages/home';
 import VideosPage from './pages/videospage';
 import AboutPage from './pages/aboutpage';
+import SuggestionsPage from './pages/suggestionspage';
 
 const mockVideos = [
   {
@@ -150,7 +151,7 @@ function App() {
           <Route path="/" element={<Home videos={videos} openPlayer={openPlayer} featured={featured} />} />
           <Route path="/videos" element={<VideosPage videos={videos} openPlayer={openPlayer} />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/suggestions" element={<AboutPage />} />
+          <Route path="/suggestions" element={<SuggestionsPage />} />
         </Routes>
         {showPlayer && playerVideo && (
           <div id="player-modal" className="modal">

@@ -24,3 +24,6 @@ app.use('/api/musics', musicRoutes);
 
 const youtubeRoutes = require('./routes/youtube');
 app.use('/api/youtube', youtubeRoutes);
+
+const suggestionRoutes = require('./routes/suggestions');
+app.use('/api/suggestions', suggestionRoutes);
