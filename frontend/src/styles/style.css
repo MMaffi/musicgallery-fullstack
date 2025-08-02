@@ -50,7 +50,6 @@ header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
   gap: 18px;
 }
 
@@ -59,11 +58,17 @@ header {
   text-decoration: none;
   font-weight: 500;
   margin: 0 10px;
-  transition: color 0.2s;
+  transition: 0.3s;
 }
 
 .menu a:hover {
   color: #ffd700;
+}
+
+.menu a.active {
+  color: #ffd700;
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 .search-wrapper {
@@ -311,8 +316,8 @@ footer {
 
 /* Style do about page */
 main.sobre {
-  width: 50%;
-  margin: 0 auto;
+  max-width: 900px;
+  margin: 10px auto;
 }
 
 .sobre h2 {
@@ -346,8 +351,18 @@ main.sobre {
   background-color: #fff200;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 830px) {
   .featured-video {
     margin: 32px 10px;
   }
+
+  .header-right {
+    width: 100%;
+    justify-content: right;
+  }
+
+  .video-list {
+    justify-content: center;
+  }
+
 }

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import '../styles/style.css';
 
 function Navbar({ title = "Music Gallery", subtitle }) {
@@ -40,7 +40,13 @@ function Navbar({ title = "Music Gallery", subtitle }) {
       </div>
       <div className="header-right">
         <nav className="menu">
-          <Link to="/">Início</Link> | <Link to="/videos">Vídeos</Link> | <Link to="/sobre">Sobre</Link> | <a href="/sugestoes">Sugestões</a>
+          <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>Início</NavLink>
+          {' | '}
+          <NavLink to="/videos" className={({ isActive }) => isActive ? 'active' : ''}>Vídeos</NavLink>
+          {' | '}
+          <NavLink to="/about" className={({ isActive }) => isActive ? 'active' : ''}>Sobre</NavLink>
+          {' | '}
+          <NavLink to="/suggestions" className={({ isActive }) => isActive ? 'active' : ''}>Sugestões</NavLink>
         </nav>
         <div className="search-wrapper" ref={inputRef}>
           <button

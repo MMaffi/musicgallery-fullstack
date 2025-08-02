@@ -133,7 +133,7 @@ function App() {
             }
           />
           <Route
-            path="/sobre"
+            path="/about"
             element={
               <Navbar subtitle="Sobre" />
             }
@@ -143,7 +143,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home videos={videos} openPlayer={openPlayer} featured={featured} />} />
           <Route path="/videos" element={<VideosPage videos={videos} openPlayer={openPlayer} />} />
-          <Route path="/sobre" element={<AboutPage />} />
+          <Route path="/about" element={<AboutPage />} />
         </Routes>
         {showPlayer && playerVideo && (
           <div id="player-modal" className="modal">
