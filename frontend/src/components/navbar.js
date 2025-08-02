@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/style.css';
 
-function Navbar() {
+function Navbar({ title = "Music Gallery", subtitle }) {
   const [showInput, setShowInput] = useState(false);
   const inputRef = useRef(null);
 
@@ -27,12 +28,19 @@ function Navbar() {
   return (
     <header>
       <div className="header-left">
-        <h1>Music Gallery</h1>
-        <p className="tagline">Assista covers de músicas incríveis com visuais únicos.</p>
+        <h1>
+          {title}
+          {subtitle && (
+            <>
+              <span className="separator"> | </span>
+              <span className="navbar-subtitle">{subtitle}</span>
+            </>
+          )}
+        </h1>
       </div>
       <div className="header-right">
         <nav className="menu">
-          <a href="/">Início</a> | <a href="/videos">Vídeos</a> | <a href="/sobre">Sobre</a> | <a href="/sugestoes">Sugestões</a>
+          <Link to="/">Início</Link> | <Link to="/videos">Vídeos</Link> | <Link to="/sobre">Sobre</Link> | <a href="/sugestoes">Sugestões</a>
         </nav>
         <div className="search-wrapper" ref={inputRef}>
           <button

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from './components/Navbar';
-import FeaturedVideo from './components/FeaturedVideo';
-import VideoList from './components/VideoList';
-import Footer from './components/Footer';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/navbar';
+import Footer from './components/footer';
 import SettingsModal from './components/SettingsModal';
+
+import Home from './pages/home';
+import VideosPage from './pages/videospage';
+import AboutPage from './pages/aboutpage';
 
 const mockVideos = [
   {
@@ -116,16 +119,36 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <Navbar />
-      <main>
-        <section id="featured">
-          {featured && <FeaturedVideo video={featured} openPlayer={openPlayer} />}
-        </section>
-        <h3 className="gallery-subtitle" id="gallerySubtitle">Vídeos Rescentes</h3>
-        <section id="gallery" className="gallery">
-          <VideoList videos={videos} openPlayer={openPlayer} />
-        </section>
+    <Router>
+      <div className="app">
+        <Routes>
+          <Route
+            path="/"
+            element={<Navbar />}
+          />
+          <Route
+            path="/videos"
+            element={
+              <Navbar
+                subtitle="Todos os Vídeos"
+              />
+            }
+          />
+          <Route
+            path="/sobre"
+            element={
+              <Navbar
+                subtitle="Sobre"
+              />
+            }
+          />
+        </Routes>
+
+        <Routes>
+          <Route path="/" element={<Home videos={videos} openPlayer={openPlayer} featured={featured} />} />
+          <Route path="/videos" element={<VideosPage videos={videos} openPlayer={openPlayer} />} />
+          <Route path="/sobre" element={<AboutPage />} />
+        </Routes>
         {showPlayer && playerVideo && (
           <div id="player-modal" className="modal">
             <div className="modal-content">
@@ -151,10 +174,10 @@ function App() {
             </div>
           </div>
         )}
-      </main>
-      <Footer />
-      <SettingsModal />
-    </div>
+        <Footer />
+        <SettingsModal />
+      </div>
+    </Router>
   );
 }
 
