@@ -129,17 +129,13 @@ function App() {
           <Route
             path="/videos"
             element={
-              <Navbar
-                subtitle="Todos os Vídeos"
-              />
+              <Navbar subtitle="Todos os Vídeos" />
             }
           />
           <Route
             path="/sobre"
             element={
-              <Navbar
-                subtitle="Sobre"
-              />
+              <Navbar subtitle="Sobre" />
             }
           />
         </Routes>
