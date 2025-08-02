@@ -3,10 +3,10 @@ const router = express.Router();
 const nodemailer = require('nodemailer');
 
 router.post('/send', async (req, res) => {
-  const { name, email, suggestion } = req.body;
+  const { name, email, song, artist, suggestion } = req.body;
 
-  if (!name || !suggestion) {
-    return res.status(400).json({ error: 'Nome e sugestão são obrigatórios.' });
+  if (!name || !song || !artist) {
+    return res.status(400).json({ error: 'Nome, música e artista são obrigatórios.' });
   }
 
   const transporter = nodemailer.createTransport({
@@ -21,7 +21,18 @@ router.post('/send', async (req, res) => {
     from: `"Sugestão do site Music Gallery" <${process.env.EMAIL_USER}>`,
     to: process.env.EMAIL_USER,
     subject: `Nova sugestão de música de ${name}`,
-    text: `Nome: ${name}\nEmail: ${email || 'Não informado'}\n\nSugestão:\n${suggestion}`
+    text: `
+📨 Sugestão enviada pelo site Music Gallery
+
+👤 Nome: ${name}
+📧 Email: ${email || 'Não informado'}
+
+🎵 Música: ${song}
+🎤 Artista: ${artist}
+
+📝 Comentário:
+${suggestion || 'Nenhum comentário'}
+    `.trim()
   };
 
   try {

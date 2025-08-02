@@ -342,7 +342,7 @@ main.sobre {
 
 .suggestion-form {
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   background-color: #1e1e2f;
   padding: 2rem;
   border-radius: 12px;
@@ -379,6 +379,12 @@ main.sobre {
 .suggestion-form textarea {
   resize: vertical;
   min-height: 120px;
+}
+
+.suggestion-form label {
+  color: #fff;
+  margin-bottom: -15px;
+  margin-left: 3px;
 }
 
 .suggestion-form button {
