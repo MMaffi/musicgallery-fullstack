@@ -74,12 +74,21 @@
 
 .setting-group button {
   width: 100%;
-  padding: 8px;
-  border-radius: 5px;
+  padding: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
   border: none;
-  background: #0c1014;
+  border-radius: 6px;
+  background: linear-gradient(145deg, #1a1f27, #0c1014);
   color: #fff;
+  transition: all 0.25s ease;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.setting-group button:hover {
+  background-color: #1c1f26;
+  transform: translateY(-1px);
 }
 
 .setting-group.about {
@@ -115,15 +124,21 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: var(--color-bg, #0c1014);
-  color: var(--color-text, #fff);
-  border: 1px solid #555;
+  background: linear-gradient(145deg, #1a1f27, #0c1014);
+  color: #fff;
+  border: none;
   padding: 8px 12px;
   width: 100%;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   min-width: 160px;
   box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.dropdown-toggle:hover {
+  background-color: #1c1f26;
+  transform: translateY(-1px);
 }
 
 .dropdown-toggle img {
@@ -137,16 +152,17 @@
   position: absolute;
   top: 110%;
   left: 0;
-  background-color: var(--color-bg, #0c1014);
-  border: 1px solid #555;
-  border-radius: 4px;
+  background: linear-gradient(145deg, #1a1f27, #0c1014);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
   list-style: none;
   margin: 4px 0 0;
   padding: 4px 0;
   display: none;
   z-index: 1000;
   min-width: 160px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
 .dropdown-options li {
@@ -185,14 +201,14 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #101820;
-  color: #ccc;
+  background: linear-gradient(145deg, #1a1f27, #0c1014);
+  color: #fff;
   border: none;
   border-radius: 50%;
   width: 40px;
   height: 40px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   z-index: 9999;
   display: flex;
   align-items: center;

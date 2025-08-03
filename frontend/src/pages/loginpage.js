@@ -91,7 +91,7 @@ function LoginPage() {
           </form>
 
           <p className='linklogin'>
-            Ainda não tem cadastro? Faça <NavLink to="/register">Registro</NavLink>
+            Ainda não tem cadastro? <NavLink to="/register">Cadastrar-se</NavLink>
           </p>
         </div>
       </main>
