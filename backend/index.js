@@ -41,3 +41,7 @@ app.use('/api/suggestions', suggestionRoutes);
 // Rota de Registro/Login
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
+
+// Rota de configurações
+const settingsRoutes = require('./routes/settings');
+app.use('/api/settings', settingsRoutes);

@@ -1,15 +1,14 @@
 import React, { useState, useContext } from 'react';
 import Navbar from '../components/navbar';
 import '../styles/register.css';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 
 function LoginPage() {
-  const { setUser } = useContext(AuthContext); // pega setUser do contexto
+  const { setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [status, setStatus] = useState(null);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,13 +29,14 @@ function LoginPage() {
 
       if (res.ok) {
         const data = await res.json();
-
-        setUser({ name: data.name });
+        setUser(data);
 
         setStatus('success');
         toast.success('Login realizado com sucesso!');
+
+        // Aguarda um pouco e recarrega a página na home
         setTimeout(() => {
-          navigate('/');
+          window.location.href = '/';
         }, 1500);
       } else {
         let errorMsg = 'Erro no login';

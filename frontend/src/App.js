@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
@@ -6,6 +6,7 @@ import SettingsModal from './components/SettingsModal';
 import { AuthProvider } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { SettingsContext } from './context/SettingsContext';
 
 import Home from './pages/home';
 import VideosPage from './pages/videospage';
@@ -95,6 +96,26 @@ function App() {
   const [showPlayer, setShowPlayer] = useState(false);
   const [playerVideo, setPlayerVideo] = useState(null);
   const [featured, setFeatured] = useState(null);
+
+  // Parte de tema do site
+  const { settings } = useContext(SettingsContext);
+
+  useEffect(() => {
+    const theme = settings.theme || 'system';
+    const root = document.documentElement;
+
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else if (theme === 'light') {
+      root.classList.add('light');
+      root.classList.remove('dark');
+    } else {
+      const systemPref = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.classList.add(systemPref ? 'dark' : 'light');
+      root.classList.remove(systemPref ? 'light' : 'dark');
+    }
+  }, [settings]);
 
   useEffect(() => {
     if (videos.length > 0) {

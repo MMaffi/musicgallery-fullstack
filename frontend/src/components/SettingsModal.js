@@ -3,25 +3,55 @@ import '../styles/configstyle.css';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import LogoutButton from './LogoutButton';
+import { SettingsContext } from '../context/SettingsContext';
 
 function SettingsModal() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const { settings, updateSetting } = useContext(SettingsContext);
+
   const [open, setOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState({ code: 'pt', label: 'Português', flag: './assets/flags/br.svg' });
-  const [selectedTheme, setSelectedTheme] = useState({ code: 'dark', label: '🌙 Escuro' });
 
   const langRef = useRef(null);
   const themeRef = useRef(null);
 
+  // Opções de idiomas e temas
+  const languageOptions = {
+    pt: { code: 'pt', label: 'Português', flag: './assets/flags/br.svg' },
+    en: { code: 'en', label: 'English', flag: './assets/flags/us.svg' },
+    es: { code: 'es', label: 'Español', flag: './assets/flags/es.svg' },
+  };
+
+  const themeOptions = {
+    dark: { code: 'dark', label: '🌙 Escuro' },
+    light: { code: 'light', label: '☀️ Claro' },
+    system: { code: 'system', label: '🖥️ Sistema' },
+  };
+
+  // Estado local dos selecionados — inicializa com valores do contexto, ou padrão
+  const [selectedLang, setSelectedLang] = useState(languageOptions.pt);
+  const [selectedTheme, setSelectedTheme] = useState(themeOptions.dark);
+
+  // Atualiza selectedLang e selectedTheme quando 'settings' mudar
+  useEffect(() => {
+    if (settings.language && languageOptions[settings.language]) {
+      setSelectedLang(languageOptions[settings.language]);
+    }
+    if (settings.theme && themeOptions[settings.theme]) {
+      setSelectedTheme(themeOptions[settings.theme]);
+    }
+  }, [settings]);
+
+  // Controla o scroll do body quando modal aberto
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
+  // Fecha dropdowns se clicar fora
   useEffect(() => {
     function handleClickOutside(e) {
       if (langOpen && langRef.current && !langRef.current.contains(e.target)) setLangOpen(false);
@@ -33,16 +63,21 @@ function SettingsModal() {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [langOpen, themeOpen]);
 
+  // Seleciona idioma e atualiza no contexto/backend
   const handleLangSelect = (lang) => {
     setSelectedLang(lang);
     setLangOpen(false);
+    updateSetting('language', lang.code);
   };
 
+  // Seleciona tema e atualiza no contexto/backend
   const handleThemeSelect = (theme) => {
     setSelectedTheme(theme);
     setThemeOpen(false);
+    updateSetting('theme', theme.code);
   };
 
+  // Navega para login e registro
   const handleLoginClick = () => {
     setOpen(false);
     navigate('/login');
@@ -80,20 +115,17 @@ function SettingsModal() {
                   <div className="setting-item">
                     <label>Idioma:</label>
                     <div className={`language-dropdown${langOpen ? ' open' : ''}`} ref={langRef}>
-                      <button className="dropdown-toggle" onClick={() => setLangOpen((v) => !v)} type="button">
+                      <button className="dropdown-toggle" onClick={() => setLangOpen(v => !v)} type="button">
                         <img src={selectedLang.flag} alt={selectedLang.label} />
                         <span>{selectedLang.label}</span>
                       </button>
                       <ul className="dropdown-options">
-                        <li onClick={() => handleLangSelect({ code: 'pt', label: 'Português', flag: './assets/flags/br.svg' })}>
-                          <img src="./assets/flags/br.svg" alt="BR" /><span>Português</span>
-                        </li>
-                        <li onClick={() => handleLangSelect({ code: 'en', label: 'English', flag: './assets/flags/us.svg' })}>
-                          <img src="./assets/flags/us.svg" alt="EN" /><span>English</span>
-                        </li>
-                        <li onClick={() => handleLangSelect({ code: 'es', label: 'Español', flag: './assets/flags/es.svg' })}>
-                          <img src="./assets/flags/es.svg" alt="ES" /><span>Español</span>
-                        </li>
+                        {Object.values(languageOptions).map(lang => (
+                          <li key={lang.code} onClick={() => handleLangSelect(lang)}>
+                            <img src={lang.flag} alt={lang.label} />
+                            <span>{lang.label}</span>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </div>
@@ -101,13 +133,15 @@ function SettingsModal() {
                   <div className="setting-item">
                     <label>Tema:</label>
                     <div className={`theme-dropdown${themeOpen ? ' open' : ''}`} ref={themeRef}>
-                      <button className="dropdown-toggle" onClick={() => setThemeOpen((v) => !v)} type="button">
+                      <button className="dropdown-toggle" onClick={() => setThemeOpen(v => !v)} type="button">
                         <span>{selectedTheme.label}</span>
                       </button>
                       <ul className="dropdown-options">
-                        <li onClick={() => handleThemeSelect({ code: 'dark', label: '🌙 Escuro' })}><span>🌙 Escuro</span></li>
-                        <li onClick={() => handleThemeSelect({ code: 'light', label: '☀️ Claro' })}><span>☀️ Claro</span></li>
-                        <li onClick={() => handleThemeSelect({ code: 'system', label: '🖥️ Sistema' })}><span>🖥️ Sistema</span></li>
+                        {Object.values(themeOptions).map(theme => (
+                          <li key={theme.code} onClick={() => handleThemeSelect(theme)}>
+                            <span>{theme.label}</span>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </div>
@@ -126,7 +160,7 @@ function SettingsModal() {
                 </div>
 
                 <div className="setting-group auth-buttons">
-                  <p className='user_label'>Olá, {user.name}!</p>
+                  <p className="user_label">Olá, {user.name}!</p>
                   <LogoutButton className="logout-btn" />
                 </div>
               </>
