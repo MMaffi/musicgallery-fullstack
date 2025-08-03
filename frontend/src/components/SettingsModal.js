@@ -4,12 +4,14 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import LogoutButton from './LogoutButton';
 import { SettingsContext } from '../context/SettingsContext';
+import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 function SettingsModal() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-
   const { settings, updateSetting } = useContext(SettingsContext);
+  const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
@@ -19,21 +21,20 @@ function SettingsModal() {
   const themeRef = useRef(null);
 
   const languageOptions = useMemo(() => ({
-    pt: { code: 'pt', label: 'Português', flag: './assets/flags/br.svg' },
-    en: { code: 'en', label: 'English', flag: './assets/flags/us.svg' },
-    es: { code: 'es', label: 'Español', flag: './assets/flags/es.svg' },
-  }), []);
+    pt: { code: 'pt', label: t('languages.pt'), flag: './assets/flags/br.svg' },
+    en: { code: 'en', label: t('languages.en'), flag: './assets/flags/us.svg' },
+    es: { code: 'es', label: t('languages.es'), flag: './assets/flags/es.svg' },
+  }), [t]);
 
   const themeOptions = useMemo(() => ({
-    dark: { code: 'dark', label: '🌙 Escuro' },
-    light: { code: 'light', label: '☀️ Claro' },
-    system: { code: 'system', label: '🖥️ Sistema' },
-  }), []);
+    dark: { code: 'dark', label: t('themes.dark') },
+    light: { code: 'light', label: t('themes.light') },
+    system: { code: 'system', label: t('themes.system') },
+  }), [t]);
 
   const [selectedLang, setSelectedLang] = useState(languageOptions.pt);
   const [selectedTheme, setSelectedTheme] = useState(themeOptions.dark);
 
-  // Atualiza selectedLang e selectedTheme quando 'settings' mudar
   useEffect(() => {
     if (settings.language && languageOptions[settings.language]) {
       setSelectedLang(languageOptions[settings.language]);
@@ -43,13 +44,11 @@ function SettingsModal() {
     }
   }, [settings, languageOptions, themeOptions]);
 
-  // Controla o scroll do body quando modal aberto
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  // Fecha dropdowns se clicar fora
   useEffect(() => {
     function handleClickOutside(e) {
       if (langOpen && langRef.current && !langRef.current.contains(e.target)) setLangOpen(false);
@@ -61,21 +60,19 @@ function SettingsModal() {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [langOpen, themeOpen]);
 
-  // Seleciona idioma e atualiza no contexto/backend
   const handleLangSelect = (lang) => {
     setSelectedLang(lang);
     setLangOpen(false);
     updateSetting('language', lang.code);
+    i18n.changeLanguage(lang.code);
   };
 
-  // Seleciona tema e atualiza no contexto/backend
   const handleThemeSelect = (theme) => {
     setSelectedTheme(theme);
     setThemeOpen(false);
     updateSetting('theme', theme.code);
   };
 
-  // Navega para login e registro
   const handleLoginClick = () => {
     setOpen(false);
     navigate('/login');
@@ -88,7 +85,7 @@ function SettingsModal() {
 
   return (
     <>
-      <button id="configBtn" title="Configurações" onClick={() => setOpen(true)}>
+      <button id="configBtn" title={t('settings.title')} onClick={() => setOpen(true)}>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-gear" viewBox="0 0 16 16">
           <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
           <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
@@ -99,19 +96,27 @@ function SettingsModal() {
         <div id="settings-modal" className="settings-modal">
           <div className={`settings-content ${!user ? 'compact' : ''}`}>
             <span className="close-settings" onClick={() => setOpen(false)}>×</span>
-            <h2>Configurações</h2>
 
             {!user && (
-              <p className="login-required-msg">
-                ⚠️ Para acessar as configurações, é necessário estar logado.
-              </p>
+              <>
+                <h2>Configurações</h2>
+                <p className="login-required-msg">
+                  ⚠️ Para acessar as configurações, é necessário estar logado.
+                </p>
+
+                <div className="setting-group auth-buttons">
+                  <button className="login-btn" onClick={handleLoginClick}>Login</button>
+                  <button className="register-btn" onClick={handleRegisterClick}>Registrar</button>
+                </div>
+              </>
             )}
 
             {user ? (
               <>
+                <h2>{t('settings.title')}</h2>
                 <div className="setting-row">
                   <div className="setting-item">
-                    <label>Idioma:</label>
+                    <label>{t('settings.language')}:</label>
                     <div className={`language-dropdown${langOpen ? ' open' : ''}`} ref={langRef}>
                       <button className="dropdown-toggle" onClick={() => setLangOpen(v => !v)} type="button">
                         <img src={selectedLang.flag} alt={selectedLang.label} />
@@ -129,7 +134,7 @@ function SettingsModal() {
                   </div>
 
                   <div className="setting-item">
-                    <label>Tema:</label>
+                    <label>{t('settings.theme')}:</label>
                     <div className={`theme-dropdown${themeOpen ? ' open' : ''}`} ref={themeRef}>
                       <button className="dropdown-toggle" onClick={() => setThemeOpen(v => !v)} type="button">
                         <span>{selectedTheme.label}</span>
@@ -146,33 +151,34 @@ function SettingsModal() {
                 </div>
 
                 <div className="setting-group">
-                  <label>Notificações</label>
-                  <button>Ativar notificações</button>
+                  <label>{t('settings.notifications')}</label>
+                  <button>{t('settings.enable_notifications')}</button>
                   <br /><br />
-                  <button>Desativar notificações</button>
+                  <button>{t('settings.disable_notifications')}</button>
                 </div>
 
                 <div className="setting-group">
-                  <label>Histórico:</label>
-                  <button>Limpar histórico</button>
+                  <label>{t('settings.history')}:</label>
+                  <button>{t('settings.clear_history')}</button>
                 </div>
 
                 <div className="setting-group auth-buttons">
-                  <p className="user_label">Olá, {user.name}!</p>
+                  <p className="user_label">{t('settings.greeting')}, {user.name}!</p>
                   <LogoutButton className="logout-btn" />
+                </div>
+
+                <div className="setting-group about">
+                  <p><strong>Music Gallery</strong> v<span id="siteVersion">1.0.0</span></p>
+                  <p>{t('settings.by')} <a href="https://github.com/mmaffi" target="_blank" rel="noopener noreferrer">mmaffi</a></p>
                 </div>
               </>
             ) : (
-              <div className="setting-group auth-buttons">
-                <button className="login-btn" onClick={handleLoginClick}>Login</button>
-                <button className="register-btn" onClick={handleRegisterClick}>Registrar</button>
+              <div className="setting-group about">
+                <p><strong>Music Gallery</strong> v<span id="siteVersion">1.0.0</span></p>
+                <p>por <a href="https://github.com/mmaffi" target="_blank" rel="noopener noreferrer">mmaffi</a></p>
               </div>
             )}
 
-            <div className="setting-group about">
-              <p><strong>Music Gallery</strong> v<span id="siteVersion">1.0.0</span></p>
-              <p>por <a href="https://github.com/mmaffi" target="_blank" rel="noopener noreferrer">mmaffi</a></p>
-            </div>
           </div>
         </div>
       )}

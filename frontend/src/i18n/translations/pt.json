@@ -1,0 +1,29 @@
+{
+  "settings": {
+    "title": "Configurações",
+    "login_required": "Para acessar as configurações, é necessário estar logado.",
+    "language": "Idioma",
+    "theme": "Tema",
+    "notifications": "Notificações",
+    "enable_notifications": "Ativar notificações",
+    "disable_notifications": "Desativar notificações",
+    "history": "Histórico",
+    "clear_history": "Limpar histórico",
+    "greeting": "Olá",
+    "by": "por"
+  },
+  "languages": {
+    "pt": "Português",
+    "en": "Inglês",
+    "es": "Espanhol"
+  },
+  "themes": {
+    "dark": "🌙 Escuro",
+    "light": "☀️ Claro",
+    "system": "🖥️ Sistema"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Registrar"
+  }
+}

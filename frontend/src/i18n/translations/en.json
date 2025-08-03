@@ -1,0 +1,29 @@
+{
+  "settings": {
+    "title": "Settings",
+    "login_required": "⚠️ You need to be logged in to access the settings.",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications",
+    "enable_notifications": "Enable notifications",
+    "disable_notifications": "Disable notifications",
+    "history": "History",
+    "clear_history": "Clear history",
+    "greeting": "Hello",
+    "by": "by"
+  },
+  "languages": {
+    "pt": "Portuguese",
+    "en": "English",
+    "es": "Spanish"
+  },
+  "themes": {
+    "dark": "🌙 Dark",
+    "light": "☀️ Light",
+    "system": "🖥️ System"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register"
+  }
+}
