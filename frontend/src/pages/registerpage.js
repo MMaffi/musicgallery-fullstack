@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Navbar from '../components/navbar';
 import '../styles/register.css';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -8,6 +8,14 @@ function RegisterPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [status, setStatus] = useState(null);
+
+  const nameInputRef = useRef(null);
+
+  useEffect(() => {
+    if (nameInputRef.current) {
+      nameInputRef.current.focus();
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,6 +65,7 @@ function RegisterPage() {
           <form onSubmit={handleSubmit}>
             <label htmlFor="name">Nome:</label>
             <input
+            ref={nameInputRef}
               id="name"
               name="name"
               type="text"

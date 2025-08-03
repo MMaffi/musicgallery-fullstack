@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import Navbar from '../components/navbar';
 import '../styles/register.css';
 import { NavLink } from 'react-router-dom';
@@ -9,6 +9,14 @@ function LoginPage() {
   const { setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [status, setStatus] = useState(null);
+
+  const emailInputRef = useRef(null);
+
+  useEffect(() => {
+    if (emailInputRef.current) {
+      emailInputRef.current.focus();
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,6 +73,7 @@ function LoginPage() {
           <form onSubmit={handleSubmit}>
             <label htmlFor="email">E-mail:</label>
             <input
+              ref={emailInputRef}
               id="email"
               name="email"
               type="email"
