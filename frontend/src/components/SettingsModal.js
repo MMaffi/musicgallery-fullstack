@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState, useContext, useMemo } from 'react';
 import '../styles/configstyle.css';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -18,20 +18,18 @@ function SettingsModal() {
   const langRef = useRef(null);
   const themeRef = useRef(null);
 
-  // Opções de idiomas e temas
-  const languageOptions = {
+  const languageOptions = useMemo(() => ({
     pt: { code: 'pt', label: 'Português', flag: './assets/flags/br.svg' },
     en: { code: 'en', label: 'English', flag: './assets/flags/us.svg' },
     es: { code: 'es', label: 'Español', flag: './assets/flags/es.svg' },
-  };
+  }), []);
 
-  const themeOptions = {
+  const themeOptions = useMemo(() => ({
     dark: { code: 'dark', label: '🌙 Escuro' },
     light: { code: 'light', label: '☀️ Claro' },
     system: { code: 'system', label: '🖥️ Sistema' },
-  };
+  }), []);
 
-  // Estado local dos selecionados — inicializa com valores do contexto, ou padrão
   const [selectedLang, setSelectedLang] = useState(languageOptions.pt);
   const [selectedTheme, setSelectedTheme] = useState(themeOptions.dark);
 
@@ -43,7 +41,7 @@ function SettingsModal() {
     if (settings.theme && themeOptions[settings.theme]) {
       setSelectedTheme(themeOptions[settings.theme]);
     }
-  }, [settings]);
+  }, [settings, languageOptions, themeOptions]);
 
   // Controla o scroll do body quando modal aberto
   useEffect(() => {
