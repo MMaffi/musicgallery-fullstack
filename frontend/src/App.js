@@ -17,11 +17,11 @@ import LoginPage from './pages/loginpage';
 
 const mockVideos = [
   {
-    id: 'dQw4w9WgXcQ',
+    id: 'F8yG_Pe9y6o',
     title: 'Rick Astley - Never Gonna Give You Up',
     artist: 'Rick Astley',
-    thumbnail_url: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
-    video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    thumbnail_url: 'https://img.youtube.com/vi/F8yG_Pe9y6o/hqdefault.jpg',
+    video_url: 'https://www.youtube.com/watch?v=F8yG_Pe9y6o',
     publishedAt: '1987-10-25T00:00:00Z',
     views: 9999999
   },
@@ -44,20 +44,20 @@ const mockVideos = [
     views: 9999999
   },
   {
-    id: '3JZ_D3ELwOQ',
+    id: 'zOIND7DFRg4',
     title: 'Mark Ronson - Uptown Funk ft. Bruno Mars',
     artist: 'Mark Ronson',
-    thumbnail_url: 'https://img.youtube.com/vi/3JZ_D3ELwOQ/hqdefault.jpg',
-    video_url: 'https://www.youtube.com/watch?v=3JZ_D3ELwOQ',
+    thumbnail_url: 'https://img.youtube.com/vi/zOIND7DFRg4/hqdefault.jpg',
+    video_url: 'https://www.youtube.com/watch?v=zOIND7DFRg4',
     publishedAt: '2014-11-19T00:00:00Z',
     views: 8888888
   },
   {
-    id: 'dQw4w9WgXcQ',
+    id: '814SoGI3Nus',
     title: 'Rick Astley - Never Gonna Give You Up',
     artist: 'Rick Astley',
-    thumbnail_url: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
-    video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    thumbnail_url: 'https://img.youtube.com/vi/814SoGI3Nus/hqdefault.jpg',
+    video_url: 'https://www.youtube.com/watch?v=814SoGI3Nus',
     publishedAt: '1987-10-25T00:00:00Z',
     views: 9999999
   },
