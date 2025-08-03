@@ -151,15 +151,15 @@ function App() {
                       : ''}
                   </span>
                 </div>
-                <iframe
-                  id="videoPlayer"
-                  width="100%"
-                  height="400"
-                  src={`https://www.youtube.com/embed/${playerVideo.id}`}
-                  frameBorder="0"
-                  allowFullScreen
-                  title={playerVideo.title}
-                />
+                <div className="responsive-iframe-container">
+                  <iframe
+                    id="videoPlayer"
+                    src={`https://www.youtube.com/embed/${playerVideo.id}`}
+                    frameBorder="0"
+                    allowFullScreen
+                    title={playerVideo.title}
+                  />
+                </div>
               </div>
             </div>
           )}
