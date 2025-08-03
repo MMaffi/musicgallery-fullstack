@@ -29,6 +29,7 @@
   --form-bg: #222235;
   --form-input-bg: #2c2c47;
   --form-input-color: #fff;
+  --form-input-label: #ccc;
   --form-input-placeholder: #aaa;
   --form-input-outline: #f0db4f;
   --form-btn-bg: #f0db4f;
@@ -71,7 +72,8 @@
   --form-bg: #f0f0f0;
   --form-input-bg: #fff;
   --form-input-color: #000;
-  --form-input-placeholder: #666;
+  --form-input-label: #444;
+  --form-input-placeholder: #aaa;
   --form-input-outline: #b8860b;
   --form-btn-bg: #b8860b;
   --form-btn-color: #fff;
@@ -500,7 +502,7 @@ main.sobre {
 }
 
 .suggestion-form label {
-  color: #ccc;
+  color: var(--form-input-label);
   font-weight: 500;
   font-size: 1rem;
   margin-bottom: -10px;
