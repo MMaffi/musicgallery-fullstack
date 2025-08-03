@@ -45,7 +45,7 @@ router.post('/login', (req, res) => {
       if (bcryptErr) return res.status(500).json({ message: 'Erro no servidor' });
       if (!match) return res.status(401).json({ message: 'Credenciais inválidas' });
 
-      const token = jwt.sign({ id: user.id, name: user.name }, SECRET, { expiresIn: '1d' });
+      const token = jwt.sign({ id: user.id, name: user.name, email: user.email }, SECRET, { expiresIn: '15d' });
 
       res.cookie('token', token, {
         httpOnly: true,
@@ -67,7 +67,7 @@ router.post('/logout', (req, res) => {
 const authenticate = require('../middleware/auth');
 
 router.get('/me', authenticate, (req, res) => {
-  res.json({ id: req.user.id, name: req.user.name });
+  res.json({ id: req.user.id, name: req.user.name, email: req.user.email });
 });
 
 module.exports = router;

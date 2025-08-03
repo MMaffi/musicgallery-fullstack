@@ -1,33 +1,29 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/style.css';
 import { AuthContext } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 
 function SuggestionsPage() {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
+  const hasWarnedRef = useRef(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!user) {
-        toast.info('Você precisa estar logado para acessar esta página.');
-        navigate('/login');
-      }
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [user, navigate]);
+    if (!loading && !user && !hasWarnedRef.current) {
+      toast.warning('Você precisa estar logado para acessar esta página.');
+      hasWarnedRef.current = true;
+      navigate('/login');
+    }
+  }, [user, loading, navigate]);
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
     song: '',
     artist: '',
     suggestion: ''
   });
 
-  const [status, setStatus] = useState('');
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,62 +32,43 @@ function SuggestionsPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus('enviando');
+    setLoadingSubmit(true);
 
     try {
       const res = await fetch('http://localhost:3000/api/suggestions/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        credentials: 'include',
+        body: JSON.stringify({
+          ...formData,
+          name: user.name,
+          email: user.email
+        })
       });
 
       if (res.ok) {
-        setStatus('sucesso');
-        setFormData({
-          name: '',
-          email: '',
-          song: '',
-          artist: '',
-          suggestion: ''
-        });
+        toast.success('Obrigado pela sugestão! 🎶');
+        setFormData({ song: '', artist: '', suggestion: '' });
       } else {
-        setStatus('erro');
+        toast.error('Ocorreu um erro ao enviar a sugestão.');
       }
     } catch (err) {
-      console.error('Erro ao enviar:', err);
-      setStatus('erro');
+      console.error(err);
+      toast.error('Erro na conexão com o servidor.');
+    } finally {
+      setLoadingSubmit(false);
     }
   };
+
+  if (loading) {
+    return <main className="suggestions-main"><p>Carregando...</p></main>;
+  }
 
   return (
     <main className="suggestions-main">
       <section className="suggestion-form">
         <h2>Sugira uma música para o próximo cover 🎤</h2>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Seu nome:</label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            placeholder="Ex: João"
-            value={formData.name}
-            onChange={handleChange}
-            autoComplete="off"
-            required
-          />
-
-          <label htmlFor="email">Seu e-mail:</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            placeholder="Ex: joao@email.com"
-            value={formData.email}
-            onChange={handleChange}
-            autoComplete="off"
-            required
-          />
-
           <label htmlFor="song">Nome da música:</label>
           <input
             id="song"
@@ -126,11 +103,9 @@ function SuggestionsPage() {
             autoComplete="off"
           ></textarea>
 
-          <button type="submit">Enviar sugestão</button>
-
-          {status === 'enviando' && <p>Enviando...</p>}
-          {status === 'sucesso' && <p>Obrigado pela sugestão! 🎶</p>}
-          {status === 'erro' && <p>Ocorreu um erro. Tente novamente.</p>}
+          <button type="submit" disabled={loadingSubmit}>
+            {loadingSubmit ? 'Enviando...' : 'Enviar sugestão'}
+          </button>
         </form>
       </section>
     </main>

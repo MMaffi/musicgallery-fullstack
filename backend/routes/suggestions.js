@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const authenticate = require('../middleware/auth');
 const nodemailer = require('nodemailer');
 
-router.post('/send', async (req, res) => {
-  const { name, email, song, artist, suggestion } = req.body;
+router.post('/send', authenticate, async (req, res) => {
+  const { song, artist, suggestion } = req.body;
+  const { name, email } = req.user;
 
-  if (!name || !song || !artist) {
-    return res.status(400).json({ error: 'Nome, música e artista são obrigatórios.' });
+  if (!name || !email || !song || !artist) {
+    return res.status(400).json({ error: 'Nome, email, música e artista são obrigatórios.' });
   }
 
   const transporter = nodemailer.createTransport({
