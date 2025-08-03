@@ -51,7 +51,7 @@ router.post('/login', (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: 24 * 60 * 60 * 1000
+        maxAge: 15 * 24 * 60 * 60 * 1000
       });
 
       res.json({ name: user.name });
