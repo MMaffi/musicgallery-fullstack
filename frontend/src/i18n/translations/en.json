@@ -15,8 +15,7 @@
 
   "videos": {
     "not_found": "No videos found.",
-    "views": "{{count}} view",
-    "views_plural": "{{count}} views"
+    "views": "{{count}} views"
   },
 
   "player": {

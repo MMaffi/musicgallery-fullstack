@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState, useContext } from 'react';
 import { AuthContext } from './AuthContext';
+import i18n from '../i18n';
 
 export const SettingsContext = createContext();
 
@@ -10,7 +11,9 @@ export function SettingsProvider({ children }) {
 
   const fetchSettings = async () => {
     if (!user) {
-      setSettings({});  // limpa as configurações ao deslogar
+      // Usuário deslogado força idioma para português
+      setSettings({});
+      i18n.changeLanguage('pt');
       setLoading(false);
       return;
     }
@@ -20,12 +23,19 @@ export function SettingsProvider({ children }) {
       if (res.ok) {
         const data = await res.json();
         setSettings(data);
+
+        // Aplica idioma salvo no banco
+        if (data.language) {
+          i18n.changeLanguage(data.language);
+        }
       } else {
         setSettings({});
+        i18n.changeLanguage('pt');
       }
     } catch (err) {
       console.error('Erro ao carregar configurações:', err);
       setSettings({});
+      i18n.changeLanguage('pt');
     } finally {
       setLoading(false);
     }
@@ -34,6 +44,12 @@ export function SettingsProvider({ children }) {
   // Atualiza uma configuração e salva no backend
   const updateSetting = async (key, value) => {
     setSettings(prev => ({ ...prev, [key]: value }));
+
+    // Se a configuração for de idioma, muda imediatamente no i18n
+    if (key === 'language') {
+      i18n.changeLanguage(value);
+    }
+
     try {
       const res = await fetch('http://localhost:3000/api/settings', {
         method: 'POST',
@@ -41,6 +57,7 @@ export function SettingsProvider({ children }) {
         body: JSON.stringify({ key, value }),
         credentials: 'include',
       });
+
       if (!res.ok) {
         const data = await res.json();
         console.error('Erro ao salvar configuração:', data);
@@ -56,6 +73,7 @@ export function SettingsProvider({ children }) {
     fetchSettings();
   }, [user]);
 
+  // Aplica tema no body
   useEffect(() => {
     const theme = settings.theme || 'dark';
     if (theme === 'system') {
