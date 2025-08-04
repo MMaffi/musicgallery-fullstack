@@ -57,7 +57,7 @@ musicgallery-fullstack/
 ├── backend/                # Node.js + Express API
 │   ├── controllers/        # API endpoint logic
 │   ├── db/                 # Database models (Users, Settings, etc.)
-|   ├── middleware          # auth.js
+│   ├── middleware          # auth.js
 │   ├── routes/             # API routes
 │   └── index.js            # Server entry point
 
