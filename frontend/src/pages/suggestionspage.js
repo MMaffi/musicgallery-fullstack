@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/style.css';
 import { AuthContext } from '../context/AuthContext';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 function SuggestionsPage() {
+  const { t } = useTranslation();
   const { user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
   const hasWarnedRef = useRef(false);
@@ -15,7 +17,7 @@ function SuggestionsPage() {
       hasWarnedRef.current = true;
       navigate('/login');
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, t]);
 
   const [formData, setFormData] = useState({
     song: '',
@@ -47,64 +49,64 @@ function SuggestionsPage() {
       });
 
       if (res.ok) {
-        toast.success('Obrigado pela sugestão! 🎶');
+        toast.success(t('suggestions.success_message'));
         setFormData({ song: '', artist: '', suggestion: '' });
       } else {
-        toast.error('Ocorreu um erro ao enviar a sugestão.');
+        toast.error(t('suggestions.error_message'));
       }
     } catch (err) {
       console.error(err);
-      toast.error('Erro na conexão com o servidor.');
+      toast.error(t('suggestions.connection_error'));
     } finally {
       setLoadingSubmit(false);
     }
   };
 
   if (loading) {
-    return <main className="suggestions-main"><p>Carregando...</p></main>;
+    return <main className="suggestions-main"><p>{t('suggestions.loading')}</p></main>;
   }
 
   return (
     <main className="suggestions-main">
       <section className="suggestion-form">
-        <h2>Sugira uma música para o próximo cover 🎤</h2>
+        <h2>{t('suggestions.title')}</h2>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="song">Nome da música:</label>
+          <label htmlFor="song">{t('suggestions.song_label')}</label>
           <input
             id="song"
             type="text"
             name="song"
-            placeholder="Ex: Trem Bala"
+            placeholder={t('suggestions.song_placeholder')}
             value={formData.song}
             onChange={handleChange}
             autoComplete="off"
             required
           />
 
-          <label htmlFor="artist">Nome do cantor ou banda:</label>
+          <label htmlFor="artist">{t('suggestions.artist_label')}</label>
           <input
             id="artist"
             type="text"
             name="artist"
-            placeholder="Ex: Ana Vilela"
+            placeholder={t('suggestions.artist_placeholder')}
             value={formData.artist}
             onChange={handleChange}
             autoComplete="off"
             required
           />
 
-          <label htmlFor="suggestion">Comentário (opcional):</label>
+          <label htmlFor="suggestion">{t('suggestions.comment_label')}</label>
           <textarea
             id="suggestion"
             name="suggestion"
-            placeholder="Algo que queira comentar sobre a sugestão?"
+            placeholder={t('suggestions.comment_placeholder')}
             value={formData.suggestion}
             onChange={handleChange}
             autoComplete="off"
           ></textarea>
 
           <button type="submit" disabled={loadingSubmit}>
-            {loadingSubmit ? 'Enviando...' : 'Enviar sugestão'}
+            {loadingSubmit ? t('suggestions.sending') : t('suggestions.submit')}
           </button>
         </form>
       </section>

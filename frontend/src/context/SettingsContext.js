@@ -1,5 +1,3 @@
-// SettingsContext.js
-
 import { createContext, useEffect, useState, useContext } from 'react';
 import { AuthContext } from './AuthContext';
 
@@ -10,7 +8,6 @@ export function SettingsProvider({ children }) {
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
 
-  // Função para buscar as configurações do usuário
   const fetchSettings = async () => {
     if (!user) {
       setSettings({});  // limpa as configurações ao deslogar
@@ -59,7 +56,6 @@ export function SettingsProvider({ children }) {
     fetchSettings();
   }, [user]);
 
-  // Aplica o tema assim que 'settings.theme' mudar
   useEffect(() => {
     const theme = settings.theme || 'dark';
     if (theme === 'system') {

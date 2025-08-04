@@ -1,8 +1,12 @@
 import React from 'react';
 import '../styles/style.css';
+import { useTranslation } from 'react-i18next';
 
 function VideoList({ videos, openPlayer }) {
-  if (!videos || videos.length === 0) return <p>Nenhum vídeo encontrado.</p>;
+  const { t } = useTranslation();
+
+  if (!videos || videos.length === 0) return <p>{t('videos.not_found')}</p>;
+
   return (
     <div className="video-list">
       {videos.map((video) => (
@@ -15,7 +19,7 @@ function VideoList({ videos, openPlayer }) {
           />
           <div className="video-info">
             <h4>{video.title}</h4>
-            <span>{video.views} views</span>
+            <span>{t('videos.views', { count: video.views })}</span>
           </div>
         </div>
       ))}

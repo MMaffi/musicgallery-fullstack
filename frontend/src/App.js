@@ -7,6 +7,8 @@ import { AuthProvider } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SettingsContext } from './context/SettingsContext';
+import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 import Home from './pages/home';
 import VideosPage from './pages/videospage';
@@ -92,12 +94,13 @@ function App() {
   // }, []);
   // const recent = videos;
 
+  const { t } = useTranslation();
+
   const [videos] = useState(mockVideos);
   const [showPlayer, setShowPlayer] = useState(false);
   const [playerVideo, setPlayerVideo] = useState(null);
   const [featured, setFeatured] = useState(null);
 
-  // Parte de tema do site
   const { settings } = useContext(SettingsContext);
 
   useEffect(() => {
@@ -130,7 +133,6 @@ function App() {
     } else {
       document.body.style.overflow = '';
     }
-    // Limpa ao desmontar
     return () => {
       document.body.style.overflow = '';
     };
@@ -151,10 +153,42 @@ function App() {
       <AuthProvider>
         <div className="app">
           <Routes>
-            <Route path="/" element={<><Navbar /><Home videos={videos} openPlayer={openPlayer} featured={featured} /></>} />
-            <Route path="/videos" element={<><Navbar subtitle="Todos os Vídeos" /><VideosPage videos={videos} openPlayer={openPlayer} /></>} />
-            <Route path="/about" element={<><Navbar subtitle="Sobre" /><AboutPage /></>} />
-            <Route path="/suggestions" element={<><Navbar subtitle="Sugestões" /><SuggestionsPage /></>} />
+            <Route
+              path="/"
+              element={
+                <>
+                  <Navbar />
+                  <Home videos={videos} openPlayer={openPlayer} featured={featured} />
+                </>
+              }
+            />
+            <Route
+              path="/videos"
+              element={
+                <>
+                  <Navbar subtitle={t('navbar.all_videos')} />
+                  <VideosPage videos={videos} openPlayer={openPlayer} />
+                </>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <>
+                  <Navbar subtitle={t('navbar.about')} />
+                  <AboutPage />
+                </>
+              }
+            />
+            <Route
+              path="/suggestions"
+              element={
+                <>
+                  <Navbar subtitle={t('navbar.suggestions')} />
+                  <SuggestionsPage />
+                </>
+              }
+            />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
           </Routes>
@@ -162,13 +196,21 @@ function App() {
           {showPlayer && playerVideo && (
             <div id="player-modal" className="modal">
               <div className="modal-content">
-                <span className="close-button" onClick={closePlayer}>&times;</span>
+                <span className="close-button" onClick={closePlayer}>
+                  &times;
+                </span>
                 <h2 id="player-title">{playerVideo.title}</h2>
                 <div id="player-meta">
-                  <span id="player-views">{playerVideo.views} views</span>
+                  <span id="player-views">
+                    {playerVideo.views} {t('player.views')}
+                  </span>
                   <span id="player-date" className="modal-date">
                     {playerVideo.publishedAt
-                      ? new Date(playerVideo.publishedAt).toLocaleDateString()
+                      ? new Date(playerVideo.publishedAt).toLocaleDateString(i18n.language, {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })
                       : ''}
                   </span>
                 </div>
@@ -184,6 +226,7 @@ function App() {
               </div>
             </div>
           )}
+
           <Footer />
           <SettingsModal />
           <ToastContainer position="top-center" autoClose={3000} />

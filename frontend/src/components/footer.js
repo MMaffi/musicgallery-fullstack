@@ -1,7 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import '../styles/style.css';
 
 function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer>
       <div className="social-media">
@@ -22,7 +25,7 @@ function Footer() {
         </a>
       </div>
       <p className="copyright">
-        &copy; 2025 Music Gallery - Todos os direitos reservados
+        &copy; 2025 Music Gallery - {t('footer.copyright')}
       </p>
     </footer>
   );
