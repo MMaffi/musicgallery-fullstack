@@ -14,7 +14,6 @@ import Home from './pages/home';
 import VideosPage from './pages/videospage';
 import AboutPage from './pages/aboutpage';
 import SuggestionsPage from './pages/suggestionspage';
-
 import RegisterPage from './pages/registerpage';
 import LoginPage from './pages/loginpage';
 
@@ -63,45 +62,17 @@ const mockVideos = [
     video_url: 'https://www.youtube.com/watch?v=814SoGI3Nus',
     publishedAt: '1987-10-25T00:00:00Z',
     views: 9999999
-  },
+  }
 ];
 
 function App() {
-  // const [videos, setVideos] = useState([]);
-  // const [showPlayer, setShowPlayer] = useState(false);
-  // const [playerVideo, setPlayerVideo] = useState(null);
-
-  // useEffect(() => {
-  //   fetch('http://localhost:3000/api/youtube')
-  //     .then((res) => res.json())
-  //     .then(setVideos)
-  //     .catch((err) => console.error('Erro ao buscar vídeos:', err));
-  // }, []);
-
-  // const [featured, setFeatured] = useState(null);
-
-  // useEffect(() => {
-  //   fetch('http://localhost:3000/api/youtube')
-  //     .then((res) => res.json())
-  //     .then(videos => {
-  //       setVideos(videos);
-  //       if (videos.length > 0) {
-  //         const randomIndex = Math.floor(Math.random() * videos.length);
-  //         setFeatured(videos[randomIndex]);
-  //       }
-  //     })
-  //     .catch((err) => console.error('Erro ao buscar vídeos:', err));
-  // }, []);
-  // const recent = videos;
-
   const { t } = useTranslation();
+  const { settings } = useContext(SettingsContext);
 
   const [videos] = useState(mockVideos);
   const [showPlayer, setShowPlayer] = useState(false);
   const [playerVideo, setPlayerVideo] = useState(null);
   const [featured, setFeatured] = useState(null);
-
-  const { settings } = useContext(SettingsContext);
 
   useEffect(() => {
     const theme = settings.theme || 'system';
@@ -128,11 +99,7 @@ function App() {
   }, [videos]);
 
   useEffect(() => {
-    if (showPlayer) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = showPlayer ? 'hidden' : '';
     return () => {
       document.body.style.overflow = '';
     };
@@ -152,43 +119,22 @@ function App() {
     <Router>
       <AuthProvider>
         <div className="app">
+          <Navbar videos={videos} />
           <Routes>
             <Route
               path="/"
               element={
-                <>
-                  <Navbar />
-                  <Home videos={videos} openPlayer={openPlayer} featured={featured} />
-                </>
+                <Home videos={videos} openPlayer={openPlayer} featured={featured} />
               }
             />
             <Route
               path="/videos"
               element={
-                <>
-                  <Navbar subtitle={t('navbar.all_videos')} />
-                  <VideosPage videos={videos} openPlayer={openPlayer} />
-                </>
+                <VideosPage videos={videos} openPlayer={openPlayer} />
               }
             />
-            <Route
-              path="/about"
-              element={
-                <>
-                  <Navbar subtitle={t('navbar.about')} />
-                  <AboutPage />
-                </>
-              }
-            />
-            <Route
-              path="/suggestions"
-              element={
-                <>
-                  <Navbar subtitle={t('navbar.suggestions')} />
-                  <SuggestionsPage />
-                </>
-              }
-            />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/suggestions" element={<SuggestionsPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
           </Routes>

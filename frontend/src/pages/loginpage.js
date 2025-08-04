@@ -66,7 +66,6 @@ function LoginPage() {
 
   return (
     <>
-      <Navbar subtitle="Login" />
       <main className='register-container'>
         <div className="register-page">
           <h2>Entrar</h2>

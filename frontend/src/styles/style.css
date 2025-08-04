@@ -185,14 +185,13 @@ header {
 
 #suggestions {
   position: absolute;
-  top: 36px;
-  left: 0;
-  background: var(--suggestions-bg);
-  color: var(--search-color);
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid #ccc;
   width: 100%;
-  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
 }
 
 .gallery {

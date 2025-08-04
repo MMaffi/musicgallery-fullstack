@@ -2,6 +2,7 @@
   "navbar": {
     "home": "Inicio",
     "videos": "Videos",
+    "results_for": "Resultados para \"{{query}}\"",
     "about": "Acerca de",
     "suggestions": "Sugerencias",
     "search_placeholder": "Buscar...",

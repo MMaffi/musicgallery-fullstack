@@ -58,7 +58,6 @@ function RegisterPage() {
 
   return (
     <>
-      <Navbar subtitle="Registro" />
       <main className='register-container'>
         <div className="register-page">
           <h2>Cadastrar-se</h2>
