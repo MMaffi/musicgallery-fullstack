@@ -161,6 +161,7 @@ header {
 }
 
 .search-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
 }
@@ -171,7 +172,7 @@ header {
   font-size: 1.3em;
   color: var(--search-color);
   cursor: pointer;
-  margin-right: 8px;
+  margin-left: 8px;
 }
 
 #searchInput {
@@ -181,17 +182,33 @@ header {
   background: var(--search-bg);
   color: var(--search-color);
   outline: none;
+  margin-left: 10px;
+  width: 200px;
 }
 
 #suggestions {
   position: absolute;
-  background: var(--bg);
-  color: var(--text);
+  top: calc(100% + 4px);
+  left: 60px;
+  width: 222px;
+  background: var(--suggestions-bg);
+  color: var(--text-color);
   border: 1px solid #ccc;
-  width: 100%;
+  border-radius: 6px;
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.suggestion-item:hover {
+  background: var(--form-input-bg);
 }
 
 .gallery {
