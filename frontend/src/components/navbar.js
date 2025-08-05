@@ -6,6 +6,9 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/style.css';
 
+// Variavel do DotEnv
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 function Navbar({ title = "Music Gallery", videos = [] }) {
   const [showInput, setShowInput] = useState(false);
   const [query, setQuery] = useState('');
@@ -29,7 +32,7 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
   // Função para buscar histórico do usuário
   async function fetchUserHistory() {
     try {
-      const res = await axios.get('http://localhost:3000/api/history', { withCredentials: true });
+      const res = await axios.get(`${API_BASE_URL}/api/history`, { withCredentials: true });
       setHistory(res.data || []);
     } catch (err) {
       console.error('Erro ao buscar histórico do usuário:', err);
@@ -81,7 +84,7 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
   // Salva termo no banco via API
   async function saveSearchToDB(term) {
     try {
-      await axios.post('http://localhost:3000/api/history', { term }, { withCredentials: true });
+      await axios.post(`${API_BASE_URL}/api/history`, { term }, { withCredentials: true });
       fetchUserHistory();
     } catch (err) {
       console.error('Erro ao salvar no banco:', err);

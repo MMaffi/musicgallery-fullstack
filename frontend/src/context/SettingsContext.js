@@ -4,6 +4,9 @@ import i18n from '../i18n';
 
 export const SettingsContext = createContext();
 
+// Variavel do DotEnv
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 export function SettingsProvider({ children }) {
   const { user } = useContext(AuthContext);
   const [settings, setSettings] = useState({});
@@ -19,7 +22,7 @@ export function SettingsProvider({ children }) {
     }
 
     try {
-      const res = await fetch('http://localhost:3000/api/settings', { credentials: 'include' });
+      const res = await fetch(`${API_BASE_URL}/api/settings`, { credentials: 'include' });
       if (res.ok) {
         const data = await res.json();
         setSettings(data);
@@ -51,7 +54,7 @@ export function SettingsProvider({ children }) {
     }
 
     try {
-      const res = await fetch('http://localhost:3000/api/settings', {
+      const res = await fetch(`${API_BASE_URL}/api/settings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key, value }),

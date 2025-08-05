@@ -1,4 +1,7 @@
-const API_URL = 'http://localhost:3000/api/auth';
+// Variavel do DotEnv
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+const API_URL = `${API_BASE_URL}/api/auth`;
 
 export async function login(email, password) {
   const res = await fetch(`${API_URL}/login`, {

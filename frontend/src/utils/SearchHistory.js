@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const LOCAL_STORAGE_KEY = 'search_history';
 const MAX_HISTORY = 10;
 
@@ -13,7 +14,7 @@ export async function getSearchHistory(user) {
   }
 
   try {
-    const res = await axios.get('http://localhost:3000/api/history', { withCredentials: true });
+    const res = await axios.get(`${API_BASE_URL}/api/history`, { withCredentials: true });
     return res.data;
   } catch (error) {
     console.error('Erro ao buscar histórico do banco:', error);
@@ -41,7 +42,7 @@ export async function addSearchTerm(term, user) {
   }
 
   try {
-    await axios.post('http://localhost:3000/api/history', { term }, { withCredentials: true });
+    await axios.post(`${API_BASE_URL}/api/history`, { term }, { withCredentials: true });
   } catch (error) {
     console.error('Erro ao salvar termo no banco:', error);
   }
@@ -57,7 +58,7 @@ export async function clearSearchHistory(user) {
   }
 
   try {
-    await axios.delete('http://localhost:3000/api/history', { withCredentials: true });
+    await axios.delete(`${API_BASE_URL}/api/history`, { withCredentials: true });
   } catch (error) {
     console.error('Erro ao limpar histórico do banco:', error);
   }

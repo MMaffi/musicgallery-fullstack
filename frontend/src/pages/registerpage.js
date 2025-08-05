@@ -21,12 +21,15 @@ function RegisterPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // Variavel do DotEnv
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('loading');
 
     try {
-      const res = await fetch('http://localhost:3000/api/auth/register', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
