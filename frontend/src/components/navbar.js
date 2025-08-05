@@ -1,17 +1,21 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import Fuse from 'fuse.js';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 import '../styles/style.css';
 
 function Navbar({ title = "Music Gallery", videos = [] }) {
   const [showInput, setShowInput] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [history, setHistory] = useState([]);
   const inputRef = useRef(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const { user: currentUser } = useContext(AuthContext);
 
   const pathname = location.pathname;
   const searchParams = new URLSearchParams(location.search);
@@ -21,6 +25,47 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
     keys: ['title', 'description'],
     threshold: 0.3,
   });
+
+  useEffect(() => {
+    if (!currentUser) {
+      const stored = localStorage.getItem('searchHistory');
+      setHistory(stored ? JSON.parse(stored) : []);
+    } else {
+      fetchUserHistory(); // buscar do banco
+    }
+  }, [currentUser]);
+
+  async function fetchUserHistory() {
+    try {
+      const res = await axios.get('http://localhost:3000/api/history', { withCredentials: true });
+      setHistory(res.data || []);
+    } catch (err) {
+      console.error('Erro ao buscar histórico do usuário:', err);
+      setHistory([]);
+    }
+  }
+
+  function saveSearch(term) {
+    if (!term.trim()) return;
+    if (currentUser) {
+      saveSearchToDB(term);
+    } else {
+      const prev = localStorage.getItem('searchHistory');
+      const parsed = prev ? JSON.parse(prev) : [];
+      const updated = [term, ...parsed.filter(i => i !== term)].slice(0, 10);
+      localStorage.setItem('searchHistory', JSON.stringify(updated));
+      setHistory(updated);
+    }
+  }
+
+  async function saveSearchToDB(term) {
+    try {
+      await axios.post('http://localhost:3000/api/history', { term }, { withCredentials: true });
+      fetchUserHistory();
+    } catch (err) {
+      console.error('Erro ao salvar no banco:', err);
+    }
+  }
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -59,13 +104,21 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
   const handleSearchSubmit = (e) => {
     if (e.key === 'Enter' && query.trim()) {
       navigate(`/videos?q=${encodeURIComponent(query.trim())}`);
+      saveSearch(query.trim());
       setShowInput(false);
       setQuery('');
       setResults([]);
     }
   };
 
-  // Mapa de subtitles usando traduções
+  const handleHistoryClick = (term) => {
+    navigate(`/videos?q=${encodeURIComponent(term)}`);
+    saveSearch(term);
+    setShowInput(false);
+    setQuery('');
+    setResults([]);
+  };
+
   const subtitlesMap = {
     '/': '',
     '/videos': t('navbar.videos'),
@@ -73,7 +126,6 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
     '/suggestions': t('navbar.suggestions'),
   };
 
-  // subtitle final, com tradução e parâmetro q
   let subtitle = subtitlesMap[pathname] || '';
   if (pathname === '/videos' && q) {
     subtitle = t('navbar.results_for', { query: q });
@@ -120,7 +172,7 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
             🔍
           </button>
           {showInput && (
-            <>
+            <div style={{ position: 'relative', width: '250px' }}>
               <input
                 type="text"
                 id="searchInput"
@@ -140,6 +192,7 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
                       className="suggestion-item"
                       onClick={() => {
                         navigate(`/videos?q=${encodeURIComponent(video.title)}`);
+                        saveSearch(video.title);
                         setShowInput(false);
                         setQuery('');
                         setResults([]);
@@ -150,7 +203,25 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
                   ))}
                 </div>
               )}
-            </>
+              {results.length === 0 && history.length > 0 && (
+                <div id="suggestions">
+                  {history.map((item, index) => (
+                    <div
+                      key={index}
+                      className="suggestion-item"
+                      onClick={() => handleHistoryClick(item)}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-clock-history" viewBox="0 0 16 16">
+                        <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
+                        <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
+                        <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
+                      </svg>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

@@ -189,7 +189,7 @@ header {
 #suggestions {
   position: absolute;
   top: calc(100% + 4px);
-  left: 60px;
+  left: 10px;
   width: 222px;
   background: var(--suggestions-bg);
   color: var(--text-color);
@@ -202,8 +202,11 @@ header {
 }
 
 .suggestion-item {
+  display: flex;
+  align-items: center;
   padding: 8px 12px;
   cursor: pointer;
+  gap: 8px;
   transition: background 0.2s;
 }
 

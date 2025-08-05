@@ -45,3 +45,7 @@ app.use('/api/auth', authRoutes);
 // Rota de configurações
 const settingsRoutes = require('./routes/settings');
 app.use('/api/settings', settingsRoutes);
+
+// Rota do histórico de pesquisa
+const historyRoutes = require('./routes/history');
+app.use('/api/history', historyRoutes);
