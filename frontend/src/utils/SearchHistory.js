@@ -1,8 +1,12 @@
 import axios from 'axios';
 
 const LOCAL_STORAGE_KEY = 'search_history';
-const MAX_HISTORY = 50;
+const MAX_HISTORY = 10;
 
+/**
+ * Obtém o histórico de busca.
+ * Visitantes usam localStorage; usuários autenticados usam o banco de dados.
+ */
 export async function getSearchHistory(user) {
   if (!user) {
     return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
@@ -17,6 +21,9 @@ export async function getSearchHistory(user) {
   }
 }
 
+/**
+ * Adiciona um novo termo ao histórico, respeitando o limite de 10 itens.
+ */
 export async function addSearchTerm(term, user) {
   if (!term || !term.trim()) return;
 
@@ -25,25 +32,33 @@ export async function addSearchTerm(term, user) {
   if (!user) {
     const current = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
 
-    // Remove duplicatas
+    // Remove duplicatas (case insensitive)
     const updated = [term, ...current.filter(t => t.toLowerCase() !== term.toLowerCase())];
 
-    // Limita a 50 entradas
+    // Limita a 10 entradas
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated.slice(0, MAX_HISTORY)));
     return;
   }
 
   try {
-    await axios.post('/api/history', { term });
+    await axios.post('http://localhost:3000/api/history', { term }, { withCredentials: true });
   } catch (error) {
     console.error('Erro ao salvar termo no banco:', error);
   }
 }
 
-export function clearSearchHistory(user) {
+/**
+ * Limpa o histórico de busca.
+ */
+export async function clearSearchHistory(user) {
   if (!user) {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
-  } else {
-    console.warn('Limpar histórico do banco ainda não implementado');
+    return;
+  }
+
+  try {
+    await axios.delete('http://localhost:3000/api/history', { withCredentials: true });
+  } catch (error) {
+    console.error('Erro ao limpar histórico do banco:', error);
   }
 }

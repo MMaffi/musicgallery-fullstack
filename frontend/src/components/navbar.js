@@ -26,15 +26,7 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
     threshold: 0.3,
   });
 
-  useEffect(() => {
-    if (!currentUser) {
-      const stored = localStorage.getItem('searchHistory');
-      setHistory(stored ? JSON.parse(stored) : []);
-    } else {
-      fetchUserHistory(); // buscar do banco
-    }
-  }, [currentUser]);
-
+  // Função para buscar histórico do usuário
   async function fetchUserHistory() {
     try {
       const res = await axios.get('http://localhost:3000/api/history', { withCredentials: true });
@@ -45,6 +37,34 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
     }
   }
 
+  // Carrega histórico ao montar, e quando currentUser muda
+  useEffect(() => {
+    if (!currentUser) {
+      const stored = localStorage.getItem('searchHistory');
+      setHistory(stored ? JSON.parse(stored) : []);
+    } else {
+      fetchUserHistory();
+    }
+  }, [currentUser]);
+
+  // Atualiza histórico quando o evento 'historyCleared' for disparado (ex: após limpar histórico)
+  useEffect(() => {
+    function onHistoryCleared() {
+      if (!currentUser) {
+        localStorage.removeItem('searchHistory');
+        setHistory([]);
+      } else {
+        fetchUserHistory();
+      }
+    }
+
+    window.addEventListener('historyCleared', onHistoryCleared);
+    return () => {
+      window.removeEventListener('historyCleared', onHistoryCleared);
+    };
+  }, [currentUser]);
+
+  // Salva termos no localStorage ou no banco
   function saveSearch(term) {
     if (!term.trim()) return;
     if (currentUser) {
@@ -58,6 +78,7 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
     }
   }
 
+  // Salva termo no banco via API
   async function saveSearchToDB(term) {
     try {
       await axios.post('http://localhost:3000/api/history', { term }, { withCredentials: true });
@@ -67,6 +88,7 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
     }
   }
 
+  // Fecha input ao clicar fora ou pressionar ESC
   useEffect(() => {
     function handleClickOutside(event) {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -90,6 +112,7 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
     };
   }, []);
 
+  // Atualiza resultados de busca a cada digitação
   const handleInput = (e) => {
     const value = e.target.value;
     setQuery(value);
@@ -101,6 +124,7 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
     setResults(matches);
   };
 
+  // Submete busca no Enter
   const handleSearchSubmit = (e) => {
     if (e.key === 'Enter' && query.trim()) {
       navigate(`/videos?q=${encodeURIComponent(query.trim())}`);
@@ -111,6 +135,7 @@ function Navbar({ title = "Music Gallery", videos = [] }) {
     }
   };
 
+  // Clica em histórico para navegar
   const handleHistoryClick = (term) => {
     navigate(`/videos?q=${encodeURIComponent(term)}`);
     saveSearch(term);

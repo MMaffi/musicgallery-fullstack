@@ -72,6 +72,7 @@
     "disable_notifications": "Disable notifications",
     "history": "History",
     "clear_history": "Clear history",
+    "history_cleared": "Search history cleared successfully!",
     "greeting": "Hello",
     "by": "by"
   },

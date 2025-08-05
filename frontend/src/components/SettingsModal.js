@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import LogoutButton from './LogoutButton';
 import { SettingsContext } from '../context/SettingsContext';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import i18n from 'i18next';
+import { clearSearchHistory } from '../utils/SearchHistory';
 
 function SettingsModal() {
   const { user } = useContext(AuthContext);
@@ -83,6 +85,16 @@ function SettingsModal() {
     navigate('/register');
   };
 
+  const handleClearHistory = async () => {
+    const success = await clearSearchHistory(user);
+    if (success !== false) {
+      toast.success(t('settings.history_cleared') || 'Histórico limpo!');
+      window.dispatchEvent(new Event('historyCleared'));
+    } else {
+      toast.error(t('settings.history_clear_failed') || 'Falha ao limpar histórico');
+    }
+  };
+
   return (
     <>
       <button id="configBtn" title={t('settings.title')} onClick={() => setOpen(true)}>
@@ -97,7 +109,7 @@ function SettingsModal() {
           <div className={`settings-content ${!user ? 'compact' : ''}`}>
             <span className="close-settings" onClick={() => setOpen(false)}>×</span>
 
-            {!user && (
+            {!user ? (
               <>
                 <h2>Configurações</h2>
                 <p className="login-required-msg">
@@ -109,9 +121,7 @@ function SettingsModal() {
                   <button className="register-btn" onClick={handleRegisterClick}>Registrar</button>
                 </div>
               </>
-            )}
-
-            {user ? (
+            ) : (
               <>
                 <h2>{t('settings.title')}</h2>
                 <div className="setting-row">
@@ -159,7 +169,7 @@ function SettingsModal() {
 
                 <div className="setting-group">
                   <label>{t('settings.history')}:</label>
-                  <button>{t('settings.clear_history')}</button>
+                  <button onClick={handleClearHistory}>{t('settings.clear_history')}</button>
                 </div>
 
                 <div className="setting-group auth-buttons">
@@ -172,13 +182,7 @@ function SettingsModal() {
                   <p>{t('settings.by')} <a href="https://github.com/mmaffi" target="_blank" rel="noopener noreferrer">mmaffi</a></p>
                 </div>
               </>
-            ) : (
-              <div className="setting-group about">
-                <p><strong>Music Gallery</strong> v<span id="siteVersion">1.0.0</span></p>
-                <p>por <a href="https://github.com/mmaffi" target="_blank" rel="noopener noreferrer">mmaffi</a></p>
-              </div>
             )}
-
           </div>
         </div>
       )}
