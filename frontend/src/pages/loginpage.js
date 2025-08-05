@@ -1,5 +1,4 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
-import Navbar from '../components/navbar';
 import '../styles/register.css';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
