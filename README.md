@@ -106,6 +106,7 @@ cd backend
 cp .env.example .env
 npm install
 npm run build
+npm start
 ```
 
 ### 🎨 Frontend
@@ -114,6 +115,7 @@ npm run build
 cd frontend
 npm install
 npm run build
+npm start
 ```
 
 ## 🌐 Environment Variables
@@ -131,6 +133,7 @@ YOUTUBE_CHANNEL_ID=YOUR_YOUTUBE_CHANNEL_ID
 EMAIL_USER=youremail@gmail.com
 EMAIL_PASS=your_app_password
 JWT_SECRET=your_secret_key
+ALLOWED_ORIGINS=YOUR_ALLOWED_ORIGINS_URL
 ```
 
 ## 🧪 Future Improvements
