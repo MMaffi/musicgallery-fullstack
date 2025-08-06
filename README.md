@@ -69,8 +69,7 @@ musicgallery-fullstack/
 │   │   ├── i18n/           # i18n config and translation files
 │   │   ├── pages/          # Application pages (Home, Suggestions, etc.)
 │   │   ├── styles/         # Modular and responsive CSS
-│   │   └── main.jsx        # React app entry point
-│   └── vite.config.js      # Vite build configuration
+│   │   └── main.jsx        # React app entry point 
 ```
 
 ## 🚀 Technologies Used
@@ -78,7 +77,7 @@ musicgallery-fullstack/
 ```
 | Layer         | Stack                                                                  |
 |---------------|------------------------------------------------------------------------|
-| Frontend      | React, Vite, CSS, i18next                                              |
+| Frontend      | React, CSS, i18next                                              |
 | Backend       | Node.js, Express, Nodemailer                                           |
 | Database      | MySQL                                                                  |
 | External APIs | YouTube Data API v3                                                    |
