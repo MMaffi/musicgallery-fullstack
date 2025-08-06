@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nodemon index.js",
     "dev": "nodemon index.js",
+    "migrate": "node migrate.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "key0words": [],
