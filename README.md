@@ -77,7 +77,7 @@ musicgallery-fullstack/
 ```
 | Layer         | Stack                                                                  |
 |---------------|------------------------------------------------------------------------|
-| Frontend      | React, CSS, i18next                                              |
+| Frontend      | React, CSS, i18next                                                    |
 | Backend       | Node.js, Express, Nodemailer                                           |
 | Database      | MySQL                                                                  |
 | External APIs | YouTube Data API v3                                                    |
