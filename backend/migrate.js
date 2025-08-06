@@ -22,7 +22,6 @@ async function runMigrations() {
 
   for (const file of migrationFiles) {
     if (applied.has(file)) {
-      console.log(`✅ Já aplicada: ${file}`);
       continue;
     }
 
